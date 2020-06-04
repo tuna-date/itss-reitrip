@@ -1,0 +1,34 @@
+{
+  "name": "itss-reitrip",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start:dev": "nodemon --exec babel-node src/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tuna-date/itss-reitrip.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tuna-date/itss-reitrip/issues"
+  },
+  "homepage": "https://github.com/tuna-date/itss-reitrip#readme",
+  "dependencies": {
+    "body-parser": "1.19.0",
+    "express": "4.17.1",
+    "sequelize": "5.21.11",
+    "sqlite": "4.0.10"
+  },
+  "devDependencies": {
+    "@babel/core": "7.10.2",
+    "@babel/node": "7.10.1",
+    "@babel/preset-env": "7.10.2",
+    "eslint": "6.8.0",
+    "eslint-config-airbnb-base": "14.1.0",
+    "eslint-plugin-import": "2.20.2",
+    "nodemon": "2.0.4"
+  }
+}
