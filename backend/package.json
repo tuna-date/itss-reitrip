@@ -17,10 +17,14 @@
   },
   "homepage": "https://github.com/tuna-date/itss-reitrip#readme",
   "dependencies": {
+    "@babel/plugin-transform-spread": "7.10.1",
     "body-parser": "1.19.0",
+    "dotenv": "8.2.0",
     "express": "4.17.1",
+    "mysql": "2.18.1",
+    "mysql2": "2.1.0",
     "sequelize": "5.21.11",
-    "sqlite": "4.0.10"
+    "sqlite3": "4.2.0"
   },
   "devDependencies": {
     "@babel/core": "7.10.2",
