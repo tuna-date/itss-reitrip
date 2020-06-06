@@ -1,4 +1,5 @@
 import { DataTypes } from 'sequelize';
+import constants from '../helpers/constants';
 
 export const userFields = {
   id: {
@@ -13,6 +14,7 @@ export const userFields = {
   email: {
     type: DataTypes.STRING,
     allowNull: false,
+    unique: true,
   },
   password: {
     type: DataTypes.STRING,
@@ -25,6 +27,7 @@ export const userFields = {
   role: {
     type: DataTypes.STRING,
     allowNull: false,
+    defaultValue: constants.userRole.USER,
   },
 };
 
