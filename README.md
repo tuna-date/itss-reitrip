@@ -1,5 +1,4 @@
-<p align="center">
-  <h1><strong>:sunrise_over_mountains: :airplane: ReiTrip :airplane: :sunrise_over_mountains:</strong> </h1>
-  <h2><em>"Our past, your future"</em> </h2>
-  <h4> - :shipit: Xiaolin :shipit: - </h4>
-</p>
+
+  <h1 align="center">:sunrise_over_mountains: :airplane: ReiTrip :airplane: :sunrise_over_mountains:</h1>
+  <h2 align="center"><em>"Our past, your future"</em></h2>
+  <h4 align="center"> - :shipit: Xiaolin :shipit: - </h4>
