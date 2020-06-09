@@ -1,3 +1,4 @@
- <center><font size="10"><strong>:sunrise_over_mountains: :airplane: ReiTrip :airplane: :airplane: :sunrise_over_mountains:</strong> </font></center>
- <center><font size="8" color="gray"><em>"Our past, your future"</em> </font></center>
- <center><font size="6" color="gray"> - :shipit: Xiaolin :shipit: - </font></center>
+
+  <h1 align="center">:sunrise_over_mountains: :airplane: ReiTrip :airplane: :sunrise_over_mountains:</h1>
+  <h2 align="center"><em>"Our past, your future"</em></h2>
+  <h4 align="center"> - :shipit: Xiaolin :shipit: - </h4>
