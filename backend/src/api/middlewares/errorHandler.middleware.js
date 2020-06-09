@@ -18,6 +18,9 @@ export function errorHandler(err, _req, res, _next) {
     case errors.ADMIN_NOT_FOUND:
       res.status(401).send(errors.ADMIN_NOT_FOUND);
       break;
+    case errors.NOT_ADMIN:
+      res.status(400).send(errors.NOT_ADMIN);
+      break;
     default:
       res.status(503).send(err.message);
   }
