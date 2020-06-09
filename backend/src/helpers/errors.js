@@ -4,4 +4,5 @@ export default {
   ACCOUNT_DOES_NOT_EXIST: 'Account does not exist',
   EMAIL_PASS_NOT_MATCH: 'Email and password does not match',
   UNAUTH: 'Unauthorized',
+  ADMIN_NOT_FOUND: 'Admin not found',
 };

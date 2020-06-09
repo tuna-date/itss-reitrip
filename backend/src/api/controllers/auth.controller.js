@@ -23,3 +23,16 @@ export async function login(req, res, next) {
     next(err);
   }
 }
+
+export async function adminLogin(req, res, next) {
+  try {
+    const { email, password } = req.body;
+    const { currentUserId } = req.params;
+
+    const response = await authServices.adminLogin({ email, password, currentUserId });
+
+    res.status(200).send(response);
+  } catch (err) {
+    next(err);
+  }
+}

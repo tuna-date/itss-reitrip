@@ -15,6 +15,9 @@ export function errorHandler(err, _req, res, _next) {
     case errors.UNAUTH:
       res.status(401).send(errors.UNAUTH);
       break;
+    case errors.ADMIN_NOT_FOUND:
+      res.status(401).send(errors.ADMIN_NOT_FOUND);
+      break;
     default:
       res.status(503).send(err.message);
   }

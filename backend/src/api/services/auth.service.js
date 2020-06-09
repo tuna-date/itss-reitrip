@@ -54,5 +54,22 @@ export async function login(payload) {
   return response;
 }
 
+export async function adminLogin(payload) {
+  const user = await getUserByEmail(payload.email);
+  if (!user) throw new Error(errors.USER_NOT_FOUND);
+
+  if (user.role !== constants.userRole.ADMIN) throw new Error(errors.ADMIN_NOT_FOUND);
+
+  const isPasswordMatch = await bcrypt.compare(payload.password, user.password);
+  if (!isPasswordMatch) throw new Error(errors.EMAIL_PASS_NOT_MATCH);
+
+  const token = generateAccessToken({ id: user.id });
+  const response = {
+    email: user.email,
+    token,
+  };
+
+  return response;
+}
 
 export default register;
