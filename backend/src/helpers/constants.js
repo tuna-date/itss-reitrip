@@ -3,4 +3,5 @@ export default {
     USER: 'user',
     ADMIN: 'admin',
   },
+  SALT_ROUNDS: 10,
 };

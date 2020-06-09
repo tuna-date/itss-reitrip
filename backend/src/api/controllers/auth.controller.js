@@ -12,4 +12,14 @@ export async function register(req, res, next) {
   }
 }
 
-export default register;
+export async function login(req, res, next) {
+  try {
+    const { email, password } = req.body;
+
+    const response = await authServices.login({ email, password });
+
+    res.status(200).send(response);
+  } catch (err) {
+    next(err);
+  }
+}

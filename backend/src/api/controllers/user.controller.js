@@ -3,7 +3,6 @@ import * as userServices from '../services/user.service';
 export async function getUser(req, res, next) {
   try {
     const { id } = req.params;
-    console.log(req.params, id);
 
     const response = await userServices.getUser(id);
 
