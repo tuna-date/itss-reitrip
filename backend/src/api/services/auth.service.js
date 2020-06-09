@@ -17,25 +17,21 @@ function generateAccessToken(userId) {
 }
 
 export async function register(payload) {
-  try {
-    let user = await getUserByEmail(payload.email);
-    if (user) throw new Error(errors.EMAIL_WAS_REGISTED);
-    const hashPassword = await bcrypt.hash(payload.password, constants.SALT_ROUNDS);
+  let user = await getUserByEmail(payload.email);
+  if (user) throw new Error(errors.EMAIL_WAS_REGISTED);
+  const hashPassword = await bcrypt.hash(payload.password, constants.SALT_ROUNDS);
 
-    user = User.build({
-      username: payload.username,
-      email: payload.email,
-      password: hashPassword,
-    });
-    await user.save();
+  user = User.build({
+    username: payload.username,
+    email: payload.email,
+    password: hashPassword,
+  });
+  await user.save();
 
-    const response = user.toJSON();
-    delete response.password;
+  const response = user.toJSON();
+  delete response.password;
 
-    return response;
-  } catch (err) {
-    throw new Error(err.message);
-  }
+  return response;
 }
 
 export async function login(payload) {

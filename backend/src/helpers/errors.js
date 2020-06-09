@@ -5,4 +5,5 @@ export default {
   EMAIL_PASS_NOT_MATCH: 'Email and password does not match',
   UNAUTH: 'Unauthorized',
   ADMIN_NOT_FOUND: 'Admin not found',
+  NOT_ADMIN: 'Api not for you',
 };

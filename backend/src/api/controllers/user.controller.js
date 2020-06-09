@@ -4,7 +4,7 @@ export async function getUser(req, res, next) {
   try {
     const { id } = req.params;
 
-    const response = await userServices.getUser(id);
+    const response = await userServices.getUser({ id });
 
     res.status(200).send(response);
   } catch (err) {
@@ -12,9 +12,22 @@ export async function getUser(req, res, next) {
   }
 }
 
-export async function getUsers(req, res, next) {
+export async function getCurrentUser(req, res, next) {
   try {
-    const response = userServices.getUsers();
+    const { currentUserId } = req.params;
+
+    const response = await userServices.getCurrentUser({ currentUserId });
+
+    res.status(200).send(response);
+  } catch (err) {
+    next(err);
+  }
+}
+
+export async function getListUsers(req, res, next) {
+  try {
+    const { currentUserId } = req.params;
+    const response = await userServices.getListUsers({ currentUserId });
 
     res.status(200).send(response);
   } catch (err) {
