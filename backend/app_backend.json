@@ -1,0 +1,5 @@
+{
+  "name" : "reitrip-backend",
+  "script" : "app.js",
+  "cwd" : "./build/"
+}
