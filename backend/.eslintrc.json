@@ -16,7 +16,9 @@
         "sourceType": "module"
     },
     "rules": {
-        "no-console": "off"
+        "no-console": "off",
+        "camelcase": "off",
+        "linebreak-style": "off"
     },
     "overrides": [
         {

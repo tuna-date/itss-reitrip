@@ -6,4 +6,6 @@ export default {
   UNAUTH: 'Unauthorized',
   ADMIN_NOT_FOUND: 'Admin not found',
   NOT_ADMIN: 'Api not for you',
+
+  PLACE_NOT_FOUND: 'Place not found',
 };

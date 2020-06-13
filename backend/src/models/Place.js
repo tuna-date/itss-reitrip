@@ -1,4 +1,5 @@
 import { DataTypes } from 'sequelize';
+import constants from '../helpers/constants';
 
 export const placeFields = {
   id: {
@@ -25,6 +26,7 @@ export const placeFields = {
   state: {
     type: DataTypes.STRING,
     allowNull: false,
+    defaultValue: constants.registedPlaceStatus.PENDING,
   },
   user_id: {
     type: DataTypes.INTEGER,
