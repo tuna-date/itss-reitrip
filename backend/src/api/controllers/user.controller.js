@@ -34,3 +34,30 @@ export async function getListUsers(req, res, next) {
     next(err);
   }
 }
+
+export async function updateUserInfo(req, res, next) {
+  try {
+    const { username, avatar_url } = req.body;
+    const { currentUserId } = req.params;
+
+    const response = await userServices.updateUserInfo({ username, avatar_url, currentUserId });
+
+    res.status(200).send(response);
+  } catch (err) {
+    next(err);
+  }
+}
+
+
+export async function removeUser(req, res, next) {
+  try {
+    const { user_id } = req.body;
+    const { currentUserId } = req.params;
+
+    const response = await userServices.removeUser({ user_id, currentUserId });
+
+    res.status(200).send(response);
+  } catch (err) {
+    next(err);
+  }
+}

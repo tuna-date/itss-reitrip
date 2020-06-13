@@ -26,10 +26,10 @@ export async function updatePlace(req, res, next) {
   try {
     const {
       // eslint-disable-next-line camelcase
-      name, location, image_url, services,
+      id, name, location, image_url, services,
     } = req.body;
 
-    const { id, currentUserId } = req.params;
+    const { currentUserId } = req.params;
     const response = await placeServices.updatePlace({
       id, name, location, image_url, services, currentUserId,
     });
@@ -87,7 +87,8 @@ export async function confirmRegistedPlace(req, res, next) {
 
 export async function removePlace(req, res, next) {
   try {
-    const { id, currentUserId } = req.params;
+    const { currentUserId } = req.params;
+    const { id } = req.body;
     const response = await placeServices.removePlace({ id, currentUserId });
 
     res.status(200).send(response);
