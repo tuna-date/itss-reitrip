@@ -43,6 +43,7 @@ export async function login(payload) {
 
   const token = generateAccessToken({ id: user.id });
   const response = {
+    username: user.username,
     email: user.email,
     token,
   };

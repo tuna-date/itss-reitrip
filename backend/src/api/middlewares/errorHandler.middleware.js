@@ -21,6 +21,15 @@ export function errorHandler(err, _req, res, _next) {
     case errors.NOT_ADMIN:
       res.status(400).send(errors.NOT_ADMIN);
       break;
+    case errors.PLACE_NOT_FOUND:
+      res.status(400).send(errors.PLACE_NOT_FOUND);
+      break;
+    case errors.POST_NOT_FOUND:
+      res.status(400).send(errors.POST_NOT_FOUND);
+      break;
+    case errors.NO_PRIVILEGE:
+      res.status(400).send(errors.NO_PRIVILEGE);
+      break;
     default:
       res.status(503).send(err.message);
   }
