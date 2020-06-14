@@ -44,8 +44,8 @@ Post.belongsTo(User, { foreignKey: 'user_id' });
 User.hasMany(Upvote, { onDelete: 'CASCADE' });
 Upvote.belongsTo(User, { foreignKey: 'user_id' });
 
-Post.hasMany(Comment, { onDelete: 'CASCADE' });
-Comment.belongsTo(Post, { foreignKey: 'post_id' });
+Post.hasMany(Upvote, { onDelete: 'CASCADE' });
+Upvote.belongsTo(Post, { foreignKey: 'post_id' });
 
 User.hasMany(Comment, { onDelete: 'CASCADE' });
 Comment.belongsTo(User, { foreignKey: 'user_id' });

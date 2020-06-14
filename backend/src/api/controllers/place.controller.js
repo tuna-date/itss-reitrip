@@ -3,8 +3,10 @@ import * as placeServices from '../services/place.service';
 export async function registerPlace(req, res, next) {
   try {
     const {
-      // eslint-disable-next-line camelcase
-      name, location, image_url, services,
+      name,
+      location,
+      image_url,
+      services,
     } = req.body;
 
     const { currentUserId } = req.params;
@@ -25,8 +27,11 @@ export async function registerPlace(req, res, next) {
 export async function updatePlace(req, res, next) {
   try {
     const {
-      // eslint-disable-next-line camelcase
-      id, name, location, image_url, services,
+      id,
+      name,
+      location,
+      image_url,
+      services,
     } = req.body;
 
     const { currentUserId } = req.params;
