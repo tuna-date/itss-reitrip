@@ -1,9 +1,12 @@
-import React from 'react'
+import React, { Component } from 'react'
 
-export default function SignIn() {
-  return (
-    <div>
-      IMPLEMENT SIGN IN!!!
-    </div>
-  )
+export default class SignIn extends Component {
+  render() {
+    return (
+      <div>
+        IMPLEMEMNT SIGNIN
+      </div>
+    )
+  }
 }
+
