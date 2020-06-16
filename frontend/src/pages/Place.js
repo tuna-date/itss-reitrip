@@ -18,43 +18,17 @@ export default class Place extends Component {
   async componentDidMount() {
     const { match: { params } } = this.props
     let places = await API.get(`/places/${params.id}`)
-    let posts = await API.get(`/places/${params.id}/posts`)
-    if (posts.data && places.data) {
-      posts.data.map(async (p) => {
-        let user = await API.get(`/users/${p.userId}`)
-        p.realuser = user.data
-      })
-      this.setState({ place: places.data, posts: posts.data })
+    let postsData = await API.get(`/places/${params.id}/posts`)
+    for (let i = 0; i < postsData.data.length; i++) {
+      let user = await API.get(`/users/${postsData.data[i].userId}`)
+      postsData.data[i].user = user.data
     }
-  }
-
-  renderPostsList(posts) {
-    // posts[0].realuser = "a"
-    // let user = await API.get(`/users/${p.userId}`)
-    // console.log(Object.keys(posts[0]));
-
-    // return posts.map((p) => (
-    // <Col className="gutter-row" key={p.id} span={6}>
-    //   <Card>
-    //     <Meta
-    //       avatar={<Avatar size='large' icon={<UserOutlined />} />}
-    //       title={p.user}
-    //       description={p.content}
-    //     />
-    //   </Card>
-    // </Col>
-    // ))
-    return posts.map((p) => {
-      let user = API.get(`/users/${p.userId}`)
-      p['realuser'] = user.data
-      return p
-    })
+    this.setState({ place: places.data, posts: postsData.data })
   }
 
   render() {
     const { place, posts } = this.state
-    console.log(posts && this.renderPostsList(posts));
-    
+
     return (
       <div style={{ minHeight: 380, minWidth: 1000 }}>
         <Breadcrumb separator=">" style={{ margin: '16px 0px', fontSize: 20 }}>
@@ -75,12 +49,12 @@ export default class Place extends Component {
           />
         </Card>
         <Row gutter={[16, 16]} style={{ marginTop: 16 }}>
-          {posts && this.renderPostsList(posts).map((p) => (
-            <Col className="gutter-row" key={p.id} span={6}>
-              <Card>
+          {posts && posts.map((p) => (
+            <Col className="gutter-row" key={p.id} span={24}>
+              <Card hoverable>
                 <Meta
                   avatar={<Avatar size='large' icon={<UserOutlined />} />}
-                  // title={p.realuser.username}
+                  title={p.user.username}
                   description={p.content}
                 />
               </Card>
