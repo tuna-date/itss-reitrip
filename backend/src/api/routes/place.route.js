@@ -5,9 +5,9 @@ import * as placeController from '../controllers/place.controller';
 const route = Router();
 
 route.post('/places', [auth], placeController.registerPlace);
-route.get('/places/:id', [auth], placeController.getPlace);
-route.get('/places', [auth], placeController.getListPlaces);
+route.get('/places/:id', [], placeController.getPlace);
+route.get('/places', [], placeController.getListPlaces);
 route.post('/places/:id/rate', [auth], placeController.ratePlace);
-route.post('/places/search', [auth], placeController.searchPlaces);
+route.post('/places/search', [], placeController.searchPlaces);
 
 export default route;
