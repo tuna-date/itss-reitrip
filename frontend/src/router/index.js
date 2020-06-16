@@ -5,6 +5,7 @@ import SignIn from 'pages/SignIn';
 import SignUp from 'pages/SignUp';
 import Profile from 'pages/Profile';
 import About from 'pages/About'
+import Place from 'pages/Place';
 
 export default function index() {
   return (
@@ -14,6 +15,7 @@ export default function index() {
       <Route exact path='/signup' component={SignUp} />
       <Route exact path='/myprofile' component={Profile} />
       <Route exact path='/about' component={About} />
+      <Route exact path='/place/:id' component={Place} />
     </Switch>
   )
 }

@@ -12,19 +12,19 @@ export default class App extends Component {
   render() {
     return (
       <div className="App">
-        <Layout>
-          <Header style={{ position: 'fixed', zIndex: 1, width: '100%' }}>
-            <NavBar />
-          </Header>
-          <Content>
-            <BrowserRouter>
+        <BrowserRouter>
+          <Layout>
+            <Header style={{ position: 'fixed', zIndex: 1, width: '100%' }}>
+              <NavBar />
+            </Header>
+            <Content style={{ padding: '10px 50px', margin: '64px 10em 0px 10em' }}>
               <Router />
-            </BrowserRouter>
-          </Content>
-          <Footer>
-            <Foot />
-          </Footer>
-        </Layout>
+            </Content>
+            <Footer>
+              <Foot />
+            </Footer>
+          </Layout>
+        </BrowserRouter>
       </div>
     );
   }

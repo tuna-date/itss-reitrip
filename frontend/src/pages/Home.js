@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import API from 'utils/API'
-import { Card, Row, Col, Rate, Skeleton } from 'antd'
+import { Card, Row, Col, Rate, Breadcrumb } from 'antd'
+import { Link } from 'react-router-dom'
 
 const { Meta } = Card
 
@@ -8,49 +9,48 @@ export default class Home extends Component {
   constructor() {
     super()
     this.state = {
-      data: null
+      places: null
     }
   }
 
   async componentDidMount() {
-    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNTkyMjAwNDk1LCJleHAiOjE1OTIyODY4OTV9.CDZlrS4zMBIukeOVQP6bT-w2_GTjB0K4v4r6cvGPjd4'
-    let data = await API.get('/places', {
-      headers: {
-        Authorization: token
-      }
-    })
-    this.setState({ data: data.data })
+    let data = await API.get('/places')
+    this.setState({ places: data.data })
   }
 
   render() {
-    const { data } = this.state
-    console.log(data);
-    const lists = [<Col className="gutter-row" span={6}>
-      <Card
-        hoverable
-        style={{ width: 240, marginTop: 10 }}
-        span={6}
-        cover={
-          <img alt="example" src={
-            data && "https://hasura.io/blog/content/images/2019/08/Screen-Shot-2019-08-27-at-8.21.35.png"
-          } />
-        }
-      >
-        <Meta
-          title={data && data[0].name}
-          description={data && data[0].services}
-        />
-        <div>Location: {data && data[0].location}</div>
-        <div>
-          <Rate allowHalf disabled value={data && data[0].averageRate} />
-        </div>
-      </Card>
-    </Col>]
+    const { places } = this.state
+    const lists = places && places.map((p) => <Col className="gutter-row" key={p.id} span={6} style={{ textAlign: '-webkit-center' }}>
+      <Link to={`/place/${p.id}`}>
+        <Card
+          hoverable
+          style={{ width: 240, marginTop: 10 }}
+          span={6}
+          cover={
+            <img alt='example' src={
+              "https://res-4.cloudinary.com/enchanting/images/w_1600,h_700,c_fill,f_auto/et-web/2015/05/Enchanting-Travels-Vietnam-Tours-Nha-Trang-Hotels-Evason-Ana-Mandara-Nha-Trang-Hotel-in-Vietnam-Nha-Trang-beach-bbq/vietnam8217s-heritage-cities-and-beach-tour-trip-1.jpg"
+            } />
+          }
+        >
+          <Meta
+            title={p.name}
+            description={p.services}
+          />
+          <div>Location: {p.location}</div>
+          <div>
+            <Rate allowHalf disabled value={p.averageRate} />
+          </div>
+        </Card>
+      </Link>
+    </Col>)
 
     return (
-      <div style={{ marginTop: 64 }}>
-        <Row gutter={16}>
-          {lists.concat(lists.concat(lists.concat(lists)))}
+      <div style={{ minHeight: 380 }}>
+        <Breadcrumb separator=">" style={{ margin: '16px 0px', fontSize: 20 }}>
+          <Breadcrumb.Item><Link to='/'>Home</Link></Breadcrumb.Item>
+        </Breadcrumb>
+        <Row gutter={[16, 16]}>
+          {lists}
         </Row>
       </div>
     )
