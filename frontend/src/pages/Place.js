@@ -30,7 +30,7 @@ export default class Place extends Component {
     const { place, posts } = this.state
 
     return (
-      <div style={{ minHeight: 380, minWidth: 1000 }}>
+      <div style={{ minHeight: 600, minWidth: 1000 }}>
         <Breadcrumb separator=">" style={{ margin: '16px 0px', fontSize: 20 }}>
           <Breadcrumb.Item><Link to='/'>Home</Link></Breadcrumb.Item>
           <Breadcrumb.Item>Place</Breadcrumb.Item>
@@ -51,13 +51,15 @@ export default class Place extends Component {
         <Row gutter={[16, 16]} style={{ marginTop: 16 }}>
           {posts && posts.map((p) => (
             <Col className="gutter-row" key={p.id} span={24}>
-              <Card hoverable>
-                <Meta
-                  avatar={<Avatar size='large' icon={<UserOutlined />} />}
-                  title={p.user.username}
-                  description={p.content}
-                />
-              </Card>
+              <Link to={`/place/${place.id}/post/${p.id}`}>
+                <Card hoverable>
+                  <Meta
+                    avatar={<Avatar size='large' icon={<UserOutlined />} />}
+                    title={p.user.username}
+                    description={p.content}
+                  />
+                </Card>
+              </Link>
             </Col>
           ))}
         </Row>

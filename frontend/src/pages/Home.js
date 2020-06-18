@@ -1,21 +1,33 @@
 import React, { Component } from 'react'
 import API from 'utils/API'
-import { Card, Row, Col, Rate, Breadcrumb } from 'antd'
+import { Card, Row, Col, Rate, Breadcrumb, Input } from 'antd'
 import { Link } from 'react-router-dom'
 
 const { Meta } = Card
+const { Search } = Input;
 
 export default class Home extends Component {
   constructor() {
     super()
     this.state = {
-      places: null
+      places: null,
+      fullPlaces: null
     }
   }
 
   async componentDidMount() {
     let data = await API.get('/places')
-    this.setState({ places: data.data })
+    this.setState({ places: data.data, fullPlaces: data.data })
+  }
+
+  handleSearch(value) {
+    const { fullPlaces } = this.state
+    if (value !== '') {
+      let placesFilter = fullPlaces.filter((p) => p.name.includes(value))
+      this.setState({ places: placesFilter })
+    } else {
+      this.setState({ places: fullPlaces })
+    }
   }
 
   render() {
@@ -45,10 +57,16 @@ export default class Home extends Component {
     </Col>)
 
     return (
-      <div style={{ minHeight: 380 }}>
+      <div style={{ minHeight: 600 }}>
         <Breadcrumb separator=">" style={{ margin: '16px 0px', fontSize: 20 }}>
           <Breadcrumb.Item><Link to='/'>Home</Link></Breadcrumb.Item>
         </Breadcrumb>
+        <Search
+          placeholder="Enter Place name"
+          enterButton="Search"
+          size="large"
+          onSearch={value => this.handleSearch(value)}
+        />
         <Row gutter={[16, 16]}>
           {lists}
         </Row>
