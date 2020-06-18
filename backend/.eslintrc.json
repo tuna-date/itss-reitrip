@@ -17,7 +17,10 @@
     },
     "rules": {
         "no-console": "off",
+<<<<<<< HEAD
+=======
         "camelcase": "off",
+>>>>>>> 466820b0afac71ba5d33a8a0b9789d3f17b7b1fe
         "linebreak-style": "off"
     },
     "overrides": [
