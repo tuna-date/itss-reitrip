@@ -56,7 +56,7 @@ export default class Post extends Component {
   render() {
     const { place, post, post_owner, comments, token } = this.state
     return (
-      <div style={{ minHeight: 600, minWidth: 1000 }}>
+      <div style={{ height: "100vh", minWidth: 1000 }}>
         <Breadcrumb separator=">" style={{ margin: '16px 0px', fontSize: 20 }}>
           <Breadcrumb.Item><Link to='/'>Home</Link></Breadcrumb.Item>
           <Breadcrumb.Item>{place && place.name}</Breadcrumb.Item>
