@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Button, Card, CardBody, CardFooter, Col, Container, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
 import {currentUser, register} from "../../Admin/Component/Request";
 import SweetAlert from "react-bootstrap-sweetalert";
+import Link from "react-router-dom/Link";
+
 
 class Register extends Component {
 constructor(props) {
@@ -108,9 +110,12 @@ constructor(props) {
                       <Input type="password" placeholder="パスワード確認" autoComplete="new-password" name="password" onChange={(event) => this.handleChange(event)} />
                     </InputGroup>
                     <Button color="success" onClick={() => this.register()} style={{width:"100%"}}>アカウントを作成</Button>
+                    <Link to="/login">
+                            <Button color="primary" className="mt-3" active tabIndex={-1} style={{width:"100%"}}>ログイン</Button>
+                          </Link>
                   </Form>
                 </CardBody>
-                <CardFooter className="p-4">
+                {/* <CardFooter className="p-4">
                   <Row>
                     <Col xs="12" sm="6">
                       <Button className="btn-facebook mb-1" block><span>facebook</span></Button>
@@ -120,7 +125,7 @@ constructor(props) {
                     </Col>
                   </Row>
                   {this.state.alert}
-                </CardFooter>
+                </CardFooter> */}
               </Card>
             </Col>
           </Row>
