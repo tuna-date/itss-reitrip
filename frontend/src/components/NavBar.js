@@ -55,7 +55,7 @@ export default class NavBar extends Component {
               </Button>
             </Menu.Item>
             <Menu.Item style={{ float: 'right' }}>
-              <Link to='/profile' >
+              <Link to='/myprofile' >
                 {user.username}
               </Link>
             </Menu.Item>
