@@ -25,6 +25,18 @@ export const upload = async (formData) => {
   });
   return response.json();
 };
+export const uploadfile = async (formData) => {
+  // let token = localStorage.getItem('token');
+  let url = "http://127.0.0.1:5000/" + 'files';
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      // "authorization": "Bearer " + token,
+    },
+    body: formData,
+  });
+  return response.json();
+};
 
 const getData = (urlContent) => {
   return doRequest('GET', urlContent, undefined)
@@ -72,3 +84,29 @@ export const login = (formData) => {
 export const register = (formData) => {
   return postData('/auth/register',formData)
 }
+
+//lấy danh sách địa điểm mới đăng kí
+export const registeredPosts = () => {
+  return getData("/admin/places")
+}
+
+//lấy danh sách địa điểm hiện tại
+export const posts = () => {
+  return getData("/places")
+}
+
+//lấy thông tin của một địa điểm
+export const place = (id) => {
+  return getData("/places/" + id)
+}
+
+//lấy danh sách bài đăng theo địa điểm
+export const listposts = (id) => {
+  return getData("/places/"+id+"/posts")
+}
+
+//lấy thông tin một bài đăng
+export const post = (placeId,id) => {
+  return getData("/places/" + placeId + "/posts/" + id)
+}
+

@@ -26,7 +26,7 @@ class Users extends Component {
       data: [],
       alert: null,
       filterField: {
-        name: "",
+        username: "",
       }
     };
   }
@@ -79,9 +79,10 @@ class Users extends Component {
       .catch((err) => console.log(err))
   }
 
-  handleChange(event,state) {
-    state.filterField[event.target.name] = event.target.value;
-    this.setState(({filterField: this.state.filterField}));
+  handleChange(event) {
+    console.log(event.target.value);
+    this.state.filterField[event.target.name] = event.target.value;
+    this.setState({filterField: this.state.filterField}, () => {console.log(this.state.filterField)});
   }
 
   renderAlert(investorId, index) {
@@ -114,17 +115,18 @@ class Users extends Component {
 
   filteredUser(user) {
     let fields = this.state.filterField;
-    return (user.name.toLowerCase().indexOf(fields.name.toLowerCase()) !== -1);
+    return (user.username.toLowerCase().indexOf(fields.username.toLowerCase()) !== -1);
   }
 
   renderAccount() {
-    let filtering = (this.state.filterField.name || this.state.filterField.mobile_phone || this.state.filterField.email);
+    let filtering = (this.state.filterField.username);
     let data;
     if (!filtering) {
       data = this.state.data;
     } else {
       data = this.state.data.filter(x => this.filteredUser(x));
     }
+    console.log(data)
     return data.map((data, index) =>
       <tr key={data.id}>
         <td>{data.id}</td>
@@ -167,8 +169,8 @@ class Users extends Component {
                             <thead>
                             <tr>
                               <th style={styles.topVertical}>ID</th>
-                              <th>名前<Input bsSize="sm" type="text" id="name" name="name"
-                                                         className="input-sm" placeholder="Tìm kiếm"
+                              <th>名前<Input bsSize="sm" type="text" id="username" name="username"
+                                                         className="input-sm" placeholder="検索"
                                                          onChange={(event) => this.handleChange(event)}/></th>
                               {/*<th>Họ tên môi giới<Input bsSize="sm" type="text" id="input-small" name="input-small"*/}
                               {/*                          className="input-sm" placeholder="Tìm kiếm"/></th>*/}
