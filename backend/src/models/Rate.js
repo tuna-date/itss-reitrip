@@ -14,6 +14,10 @@ export const rateFields = {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
+  rate_score: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
 };
 
 export default rateFields;

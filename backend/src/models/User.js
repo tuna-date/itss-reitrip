@@ -21,7 +21,7 @@ export const userFields = {
     allowNull: false,
   },
   avatar_url: {
-    type: DataTypes.STRING,
+    type: DataTypes.TEXT,
     allowNull: true,
   },
   role: {

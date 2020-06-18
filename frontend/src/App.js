@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Component } from 'react'
 import Router from './router'
 import { BrowserRouter } from 'react-router-dom'
 import { Layout } from 'antd'
@@ -7,24 +7,25 @@ import Foot from './components/Foot'
 
 const { Header, Footer, Content } = Layout
 
-function App() {
-  return (
-    <div className="App">
-      <Layout>
-        <Header>
-          <NavBar/>
-        </Header>
-        <Content>
-          <BrowserRouter>
-            <Router/>
-          </BrowserRouter>
-        </Content>
-        <Footer>
-          <Foot/>
-        </Footer>
-      </Layout>
-    </div>
-  );
-}
+export default class App extends Component {
 
-export default App;
+  render() {
+    return (
+      <div className="App">
+        <BrowserRouter>
+          <Layout>
+            <Header style={{ position: 'fixed', zIndex: 1, width: '100%' }}>
+              <NavBar />
+            </Header>
+            <Content style={{ padding: '10px 50px', margin: '64px 10em 0px 10em' }}>
+              <Router />
+            </Content>
+            <Footer>
+              <Foot />
+            </Footer>
+          </Layout>
+        </BrowserRouter>
+      </div>
+    );
+  }
+}

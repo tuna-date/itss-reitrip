@@ -5,8 +5,8 @@ import { getCurrentUser } from '../controllers/user.controller';
 
 const route = Router();
 
-route.post('/register', register);
-route.post('/login', login);
-route.get('/currentUser', [auth], getCurrentUser);
+route.post('/auth/register', register);
+route.post('/auth/login', login);
+route.get('/auth/currentUser', [auth], getCurrentUser);
 
 export default route;
