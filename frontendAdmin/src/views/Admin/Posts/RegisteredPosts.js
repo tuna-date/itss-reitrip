@@ -11,10 +11,10 @@ import {
   TabPane, Spinner, Container, Input,InputGroup,InputGroupAddon,InputGroupText
 } from 'reactstrap';
 import styles from "../../Config/styles";
-import {getUserData, posts} from "../Component/Request";
+import {getUserData, registeredPosts} from "../Component/Request";
 
 
-class Posts extends Component {
+class RegisteredPosts extends Component {
 
   constructor(props) {
     super(props);
@@ -39,9 +39,9 @@ class Posts extends Component {
   }
 
   componentDidMount() {
-    posts().then((responseJson) => {
+    registeredPosts().then((responseJson) => {
       responseJson.forEach(resp => {resp.user = getUserData(resp.user_id)});
-      this.setState({data: responseJson, isLoaded: true}, () => {console.log("kiem tra thong tin", responseJson)});
+    this.setState({data: responseJson, isLoaded: true}, () => {console.log("kiem tra thong tin", responseJson)});
     });
   }
 
@@ -253,4 +253,4 @@ class Posts extends Component {
   }
 }
 
-export default Posts;
+export default RegisteredPosts;
