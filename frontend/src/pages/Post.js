@@ -64,7 +64,7 @@ export default class Post extends Component {
         <h2>Post</h2>
         <Row className="show-grid" style={{ background: '#f8f3f3', padding: '10px' }}>
           <Col xs={6} md={8} className="gutter-row">
-            <p><h3 style={{ color: '#1890ff' }}>{post_owner && post_owner.username}</h3></p>
+            <h3 style={{ color: '#1890ff' }}>{post_owner && post_owner.username}</h3>
             <i>{post && post.created_at}</i>
             <p><i className="icon-map icons mt-4" />{post && post.content}</p>
             <Button variant="contained" color="primary" className="float-right" onClick={this.upVote}>
