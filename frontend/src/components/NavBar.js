@@ -75,7 +75,7 @@ export default class NavBar extends Component {
             </Link>
           </Menu.Item>
           <Menu.Item onClick={this.handleShowModal.bind(this)}>
-            Register new Place
+            {token ? <span>Register new Place</span> : ''}
           </Menu.Item>
           <Menu.Item
             style={{ float: 'right' }}

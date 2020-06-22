@@ -23,7 +23,7 @@ export default class Home extends Component {
   handleSearch(value) {
     const { fullPlaces } = this.state
     if (value !== '') {
-      let placesFilter = fullPlaces.filter((p) => p.name.includes(value))
+      let placesFilter = fullPlaces.filter((p) => p.name.toLowerCase().includes(value))
       this.setState({ places: placesFilter })
     } else {
       this.setState({ places: fullPlaces })
@@ -39,9 +39,7 @@ export default class Home extends Component {
           style={{ width: 240, marginTop: 10 }}
           span={6}
           cover={
-            <img alt='example' src={
-              p.image_url !== "" && p.image_url ? p.image_url : "https://res-4.cloudinary.com/enchanting/images/w_1600,h_700,c_fill,f_auto/et-web/2015/05/Enchanting-Travels-Vietnam-Tours-Nha-Trang-Hotels-Evason-Ana-Mandara-Nha-Trang-Hotel-in-Vietnam-Nha-Trang-beach-bbq/vietnam8217s-heritage-cities-and-beach-tour-trip-1.jpg"
-            } />
+            <img alt='example' style={{ height: 120 }} src={p.image_url} />
           }
         >
           <Meta
