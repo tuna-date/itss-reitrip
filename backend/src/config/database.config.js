@@ -1,7 +1,7 @@
 import path from 'path';
 import * as dotenv from 'dotenv';
 
-dotenv.config({ path: '../.env' });
+dotenv.config();
 
 export const sqliteConfig = {
   dialect: 'sqlite',
@@ -9,7 +9,7 @@ export const sqliteConfig = {
 };
 
 export const mysqlConfig = {
-  database: process.env.DB_NAME || 'retrip',
+  database: process.env.DB_NAME || 'reitrip',
   username: process.env.DB_USER || 'root',
   password: process.env.DB_PASSWORD || '1',
   host: process.env.DB_HOST || 'localhost',
@@ -21,5 +21,7 @@ export const mysqlConfig = {
     underscoredAll: true,
     createdAt: 'created_at',
     updatedAt: 'updated_at',
+    charset: 'utf8',
+    collate: 'utf8_general_ci',
   },
 };
