@@ -30,7 +30,7 @@ export default class SignIn extends Component {
   render() {
     const { email, password } = this.state
     return (
-      <div style={{ height: "100vh", margin: '8em 20em 0 20em' }}>
+      <div style={{ margin: '8em 20em 0 20em' }}>
         <Form onFinish={this.handleSubmit} className="login-form">
           <FormItem style={{ textAlign: 'center' }}>
             <Title>REITRIP</Title>

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Menu, Button, notification } from 'antd'
 import { Link } from 'react-router-dom'
 import RegisterPlace from 'components/RegisterPlace'
+import CreateNewPost from 'components/CreateNewPost'
 import API from 'utils/API'
 
 export default class NavBar extends Component {
@@ -10,7 +11,8 @@ export default class NavBar extends Component {
     this.state = {
       token: null,
       user: null,
-      showModal: false
+      showModal: false,
+      showPostModal: false
     }
   }
 
@@ -27,7 +29,11 @@ export default class NavBar extends Component {
   }
 
   handleShowModal() {
-    this.setState({ showModal: true })
+    this.setState({ showModal: true, showPostModal: false })
+  }
+
+  handleShowPostModal() {
+    this.setState({ showPostModal: true, showModal: false })
   }
   
   async handleSubmit(name, services, location, imageUrl) {    
@@ -56,6 +62,50 @@ export default class NavBar extends Component {
     }
   }
 
+  async handleSubmitPost(placeId, rateScore, content) {    
+    let token = localStorage.getItem('token')    
+    let postsData = await API.post(`/places/${placeId}/posts`, {
+      content: content,
+    }, {
+      headers: {
+        Authorization: token
+      }
+    })
+    
+    if(postsData.data) {
+      notification.success({
+        message: 'SUCCESS',
+        description: `POST CREATED`
+      })
+    } else {
+      notification.error({
+        message: 'ERROR',
+        description: `SERVER DOWN`
+      })
+    }
+
+    let rateScoreData = await API.post(`/places/${placeId}/rate`, {
+      rate_score: rateScore
+    }, {
+      headers: {
+        Authorization: token
+      }
+    })
+
+    if(rateScoreData.data) {
+      notification.success({
+        message: 'SUCCESS',
+        description: `RATED ${rateScoreData.data.rate_score} stars`
+      })
+    } else {
+      notification.error({
+        message: 'ERROR',
+        description: `SERVER DOWN`
+      })
+    }
+  }
+
+
   logout() {
     localStorage.removeItem('token')
     this.setState({ token: null, user: null })
@@ -63,7 +113,7 @@ export default class NavBar extends Component {
   }
 
   render() {
-    const { token, user, showModal } = this.state
+    const { token, user, showModal, showPostModal } = this.state
 
     return (
       <div>
@@ -76,6 +126,9 @@ export default class NavBar extends Component {
           </Menu.Item>
           <Menu.Item onClick={this.handleShowModal.bind(this)}>
             {token ? <span>Register new Place</span> : ''}
+          </Menu.Item>
+          <Menu.Item onClick={this.handleShowPostModal.bind(this)}>
+            {token ? <span>CreateNewPost</span> : ''}
           </Menu.Item>
           <Menu.Item
             style={{ float: 'right' }}
@@ -97,6 +150,7 @@ export default class NavBar extends Component {
           </Menu.Item>
         </Menu>
         <RegisterPlace showModal={showModal} handleSubmit={this.handleSubmit}/>
+        <CreateNewPost showPostModal={showPostModal} handleSubmit={this.handleSubmitPost}/>
       </div>
     )
   }

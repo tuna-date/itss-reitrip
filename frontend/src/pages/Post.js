@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Breadcrumb, Card, Row, Col, Button, Form, Input } from 'antd'
 import { LikeOutlined } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
+import ReactHtmlParser from 'react-html-parser'
 import API from 'utils/API'
 
 const { Meta } = Card
@@ -55,18 +56,22 @@ export default class Post extends Component {
 
   render() {
     const { place, post, post_owner, comments, token } = this.state
+    const { match: { params } } = this.props
+
     return (
-      <div style={{ height: "100vh", minWidth: 1000 }}>
+      <div>
         <Breadcrumb separator=">" style={{ margin: '16px 0px', fontSize: 20 }}>
           <Breadcrumb.Item><Link to='/'>Home</Link></Breadcrumb.Item>
-          <Breadcrumb.Item>{place && place.name}</Breadcrumb.Item>
+          <Breadcrumb.Item><Link to={`/place/${params.id}`}>{place && place.name}</Link></Breadcrumb.Item>
         </Breadcrumb>
         <h2>Post</h2>
         <Row className="show-grid" style={{ background: '#f8f3f3', padding: '10px' }}>
           <Col xs={6} md={8} className="gutter-row">
             <h3 style={{ color: '#1890ff' }}>{post_owner && post_owner.username}</h3>
             <i>{post && post.created_at}</i>
-            <p><i className="icon-map icons mt-4" />{post && post.content}</p>
+            <div>
+              { post && ReactHtmlParser(post.content)}
+            </div>
             <Button variant="contained" color="primary" className="float-right" onClick={this.upVote}>
               <LikeOutlined />
             </Button>

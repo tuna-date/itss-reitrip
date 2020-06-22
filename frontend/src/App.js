@@ -17,7 +17,7 @@ export default class App extends Component {
             <Header style={{ position: 'fixed', zIndex: 1, width: '100%' }}>
               <NavBar />
             </Header>
-            <Content style={{ padding: '10px 50px', margin: '64px 10em 0px 10em' }}>
+            <Content style={{ padding: '10px 50px', margin: '64px 10em 0px 10em', minHeight: '100vh' }}>
               <Router />
             </Content>
             <Footer>

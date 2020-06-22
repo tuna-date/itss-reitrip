@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Breadcrumb, Card, Avatar, Rate, Row, Col } from 'antd'
 import { UserOutlined } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
+import ReactHtmlParser from 'react-html-parser'
 import API from 'utils/API'
 
 const { Meta } = Card
@@ -30,7 +31,7 @@ export default class Place extends Component {
     const { place, posts } = this.state
 
     return (
-      <div style={{ height: "100vh", minWidth: 1000 }}>
+      <div>
         <Breadcrumb separator=">" style={{ margin: '16px 0px', fontSize: 20 }}>
           <Breadcrumb.Item><Link to='/'>Home</Link></Breadcrumb.Item>
           <Breadcrumb.Item>Place</Breadcrumb.Item>
@@ -56,7 +57,7 @@ export default class Place extends Component {
                   <Meta
                     avatar={<Avatar size='large' icon={<UserOutlined />} />}
                     title={p.user.username}
-                    description={p.content}
+                    description={ <div style={{ position: 'relative', maxHeight: 200, overflow: 'auto' }}>{ReactHtmlParser(p.content)}</div> }
                   />
                 </Card>
               </Link>
