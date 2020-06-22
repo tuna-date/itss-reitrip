@@ -2,13 +2,14 @@ import * as postServices from '../services/post.service';
 
 export async function createPost(req, res, next) {
   try {
-    const { content } = req.body;
+    const { content, rate_score } = req.body;
     const { place_id, currentUserId } = req.params;
 
     const response = await postServices.createPost({
       user_id: currentUserId,
       place_id,
       content,
+      rate_score,
     });
 
     res.status(200).send(response);
@@ -19,9 +20,9 @@ export async function createPost(req, res, next) {
 
 export async function updatePost(req, res, next) {
   try {
-    const { id, content } = req.body;
+    const { id, content, rate_score } = req.body;
 
-    const response = await postServices.updatePost({ id, content });
+    const response = await postServices.updatePost({ id, content, rate_score });
 
     res.status(200).send(response);
   } catch (err) {
