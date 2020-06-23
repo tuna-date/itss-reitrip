@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import { Breadcrumb, Card, Row, Col, Button, Form, Input } from 'antd'
-import { LikeOutlined } from '@ant-design/icons'
+import { Breadcrumb, Card, Row, Col, Button, Form, Input, Rate } from 'antd'
 import { Link } from 'react-router-dom'
 import ReactHtmlParser from 'react-html-parser'
 import API from 'utils/API'
@@ -31,10 +30,6 @@ export default class Post extends Component {
     }
     let token = localStorage.getItem('token')
     this.setState({ place: places.data, post: postDetail.data, post_owner: post_owner.data, comments: commentsData.data, token: token })
-  }
-
-  upVote() {
-
   }
 
   async handleComment(values) {
@@ -72,9 +67,7 @@ export default class Post extends Component {
             <div>
               { post && ReactHtmlParser(post.content)}
             </div>
-            <Button variant="contained" color="primary" className="float-right" onClick={this.upVote}>
-              <LikeOutlined />
-            </Button>
+            <Rate value={5} disabled/>
           </Col>
         </Row>
 

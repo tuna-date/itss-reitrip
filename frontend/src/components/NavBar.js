@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Menu, Button, notification } from 'antd'
+import { Menu, Button, notification, Radio } from 'antd'
 import { Link } from 'react-router-dom'
 import RegisterPlace from 'components/RegisterPlace'
 import CreateNewPost from 'components/CreateNewPost'
@@ -66,6 +66,7 @@ export default class NavBar extends Component {
     let token = localStorage.getItem('token')    
     let postsData = await API.post(`/places/${placeId}/posts`, {
       content: content,
+      rate_score: rateScore
     }, {
       headers: {
         Authorization: token
@@ -75,7 +76,7 @@ export default class NavBar extends Component {
     if(postsData.data) {
       notification.success({
         message: 'SUCCESS',
-        description: `POST CREATED`
+        description: `POST CREATED, RATED ${postsData.data.rate_score} stars`
       })
     } else {
       notification.error({
@@ -84,25 +85,25 @@ export default class NavBar extends Component {
       })
     }
 
-    let rateScoreData = await API.post(`/places/${placeId}/rate`, {
-      rate_score: rateScore
-    }, {
-      headers: {
-        Authorization: token
-      }
-    })
+    // let rateScoreData = await API.post(`/places/${placeId}/rate`, {
+    //   rate_score: rateScore
+    // }, {
+    //   headers: {
+    //     Authorization: token
+    //   }
+    // })
 
-    if(rateScoreData.data) {
-      notification.success({
-        message: 'SUCCESS',
-        description: `RATED ${rateScoreData.data.rate_score} stars`
-      })
-    } else {
-      notification.error({
-        message: 'ERROR',
-        description: `SERVER DOWN`
-      })
-    }
+    // if(rateScoreData.data) {
+    //   notification.success({
+    //     message: 'SUCCESS',
+    //     description: `RATED ${rateScoreData.data.rate_score} stars`
+    //   })
+    // } else {
+    //   notification.error({
+    //     message: 'ERROR',
+    //     description: `SERVER DOWN`
+    //   })
+    // }
   }
 
 
