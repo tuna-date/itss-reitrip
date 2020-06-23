@@ -2,6 +2,7 @@ import {
   Place, User, Post, Upvote, Rate
 } from '../../models/index';
 import errors from '../../helpers/errors';
+import constants from '../../helpers/constants';
 
 async function getTotalUpvotes(post) {
   const upvotes = await post.getUpvotes();
@@ -86,7 +87,10 @@ export async function updatePost(payload) {
 
 export async function removePost(payload) {
   const post = await Post.findByPk(payload.id);
-  if (post.user_id !== payload.currentUserId) throw new Error(errors.NO_PRIVILEGE);
+  const user = await User.findByPk(payload.currentUserId);
+  if (post.user_id !== payload.currentUserId || user.role !== constants.userRole.ADMIN) {
+    throw new Error(errors.NO_PRIVILEGE);
+  }
   post.destroy();
 
   return { status: 'Record deleted' };
