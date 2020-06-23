@@ -21,8 +21,9 @@ export async function createPost(req, res, next) {
 export async function updatePost(req, res, next) {
   try {
     const { id, content, rate_score } = req.body;
+    const { currentUserId } = req.params;
 
-    const response = await postServices.updatePost({ id, content, rate_score });
+    const response = await postServices.updatePost({ id, content, rate_score, currentUserId });
 
     res.status(200).send(response);
   } catch (err) {

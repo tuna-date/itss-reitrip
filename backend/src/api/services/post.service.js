@@ -57,25 +57,22 @@ export async function getListPosts(payload) {
 export async function getPost(payload) {
   const post = await Post.findByPk(payload.id);
   if (!post) throw new Error(errors.POST_NOT_FOUND);
-  const rate = await Rate.findOne({
-    where: {
-      user_id: post.user_id,
-      place_id: post.place_id,
-    }
-  })
-
-  const rate_score = rate.rate_score;
 
   const totalUpvotes = await getTotalUpvotes(post);
-  const response = { ...post.toJSON(), totalUpvotes, rate_score };
+  const response = { ...post.toJSON(), totalUpvotes };
 
   return response;
 }
 
 
 export async function updatePost(payload) {
-  console.log({payload})
+  const user = await User.findByPk(payload.currentUserId);
   const post = await Post.findByPk(payload.id);
+
+  if (post.user_id !== payload.currentUserId) {
+    throw new Error(errors.NO_PRIVILEGE);
+  }
+
   post.content = payload.content;
   await post.save();
 

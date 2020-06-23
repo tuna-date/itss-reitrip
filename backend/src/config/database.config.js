@@ -1,7 +1,7 @@
 import path from 'path';
 import * as dotenv from 'dotenv';
 
-dotenv.config();
+dotenv.config({ path: '../.env' });
 
 export const sqliteConfig = {
   dialect: 'sqlite',
