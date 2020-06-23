@@ -1,5 +1,5 @@
 import {
-  Place, User, Post, Upvote,
+  Place, User, Post, Upvote, Rate
 } from '../../models/index';
 import errors from '../../helpers/errors';
 
@@ -21,9 +21,20 @@ export async function upvotePost(payload) {
 }
 
 export async function createPost(payload) {
-  const post = await Post.create(payload);
+  const post = await Post.create({
+    user_id: payload.user_id,
+    place_id: payload.place_id,
+    content: payload.content,
+  });
 
-  return post.toJSON();
+  const rate = await Rate.create({
+    user_id: payload.user_id,
+    place_id: payload.place_id,
+    rate_score: payload.rate_score,
+  });
+  
+  const response = { ...rate.toJSON(), ...post.toJSON()};
+  return response;
 }
 
 export async function getListPosts(payload) {
@@ -54,13 +65,23 @@ export async function getPost(payload) {
 
 
 export async function updatePost(payload) {
+  console.log({payload})
   const post = await Post.findByPk(payload.id);
-
   post.content = payload.content;
-
   await post.save();
 
-  return post.toJSON();
+  const rate = await Rate.findOne({
+    where: {
+      user_id: post.user_id,
+      place_id: post.place_id,
+    }
+  });
+  rate.rate_score = payload.rate_score;
+  await rate.save();
+
+  const response = {...rate.toJSON(), ...post.toJSON()};
+
+  return response;
 }
 
 export async function removePost(payload) {
