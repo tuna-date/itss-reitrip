@@ -57,9 +57,17 @@ export async function getListPosts(payload) {
 export async function getPost(payload) {
   const post = await Post.findByPk(payload.id);
   if (!post) throw new Error(errors.POST_NOT_FOUND);
+  const rate = await Rate.findOne({
+    where: {
+      user_id: post.user_id,
+      place_id: post.place_id,
+    }
+  })
+
+  const rate_score = rate.rate_score;
 
   const totalUpvotes = await getTotalUpvotes(post);
-  const response = { ...post.toJSON(), totalUpvotes };
+  const response = { ...post.toJSON(), totalUpvotes, rate_score };
 
   return response;
 }
@@ -88,7 +96,7 @@ export async function updatePost(payload) {
 export async function removePost(payload) {
   const post = await Post.findByPk(payload.id);
   const user = await User.findByPk(payload.currentUserId);
-  if (post.user_id !== payload.currentUserId || user.role !== constants.userRole.ADMIN) {
+  if (post.user_id !== payload.currentUserId && user.role !== constants.userRole.ADMIN) {
     throw new Error(errors.NO_PRIVILEGE);
   }
   post.destroy();
