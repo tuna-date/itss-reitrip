@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import API from 'utils/API'
-import { Card, Row, Col, Rate, Breadcrumb, Input } from 'antd'
+import { Card, Row, Col, Rate, Breadcrumb, Input, Tooltip } from 'antd'
 import { Link } from 'react-router-dom'
 
 const { Meta } = Card
@@ -23,7 +23,7 @@ export default class Home extends Component {
   handleSearch(value) {
     const { fullPlaces } = this.state
     if (value !== '') {
-      let placesFilter = fullPlaces.filter((p) => p.name.toLowerCase().includes(value))
+      let placesFilter = fullPlaces.filter((p) => p.name.toLowerCase().includes(value.toLowerCase()))
       this.setState({ places: placesFilter })
     } else {
       this.setState({ places: fullPlaces })
@@ -32,21 +32,21 @@ export default class Home extends Component {
 
   render() {
     const { places } = this.state
-    const lists = places && places.map((p) => <Col className="gutter-row" key={p.id} span={6} style={{ textAlign: '-webkit-center' }}>
+    const lists = places && places.map((p) => <Col className="gutter-row list_center" key={p.id} xs={{ span: 24 }} sm={{ span: 12 }} md={{ span: 8 }} xl={{ span: 6 }}>
       <Link to={`/place/${p.id}`}>
         <Card
           hoverable
-          style={{ width: 240, marginTop: 10 }}
+          className="card"
           span={6}
           cover={
-            <img alt='example' style={{ height: 120 }} src={p.image_url} />
+            <img alt='example' className="image" src={p.image_url} />
           }
         >
           <Meta
-            title={p.name}
-            description={p.services}
+            title={<Tooltip title={p.name}>{p.name}</Tooltip>}
+            description={<Tooltip title={p.services}><div className="ellipsis">{p.services}</div></Tooltip>}
           />
-          <div>Location: {p.location}</div>
+          <div>Location: {<Tooltip title={p.location}><span className="ellipsis">{p.location}</span></Tooltip>}</div>
           <div>
             <Rate allowHalf disabled value={p.averageRate} />
           </div>
@@ -56,7 +56,7 @@ export default class Home extends Component {
 
     return (
       <div>
-        <Breadcrumb separator=">" style={{ margin: '16px 0px', fontSize: 20 }}>
+        <Breadcrumb separator=">" className="breadcrumb">
           <Breadcrumb.Item><Link to='/'>Home</Link></Breadcrumb.Item>
         </Breadcrumb>
         <Search

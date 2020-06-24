@@ -121,7 +121,7 @@ export default class Place extends Component {
 
     return (
       <div>
-        <Breadcrumb separator=">" style={{ margin: '16px 0px', fontSize: 20 }}>
+        <Breadcrumb separator=">" className="breadcrumb">
           <Breadcrumb.Item><Link to='/'>Home</Link></Breadcrumb.Item>
           <Breadcrumb.Item>My Profile</Breadcrumb.Item>
         </Breadcrumb>
@@ -134,7 +134,7 @@ export default class Place extends Component {
             </div>}
           />
         </Card>
-        <Row gutter={[16, 16]} style={{ marginTop: 16 }}>
+        <Row gutter={[16, 16]} className="listpost">
           {posts && posts.map((p, index) => (
             <Col className="gutter-row" key={p.id} span={24}>
               <Card
@@ -148,7 +148,7 @@ export default class Place extends Component {
                   <Meta
                     avatar={<Avatar size='large' src={user && user.avatar_url} />}
                     title={user.username}
-                    description={<div style={{ position: 'relative', maxHeight: 200, overflow: 'auto' }}>
+                    description={<div className="meta">
                       {ReactHtmlParser(p.content)}
                     </div>}
                   />

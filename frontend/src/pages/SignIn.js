@@ -21,7 +21,6 @@ export default class SignIn extends Component {
       email: values.email,
       password: values.password
     })
-    console.log(data);
 
     await localStorage.setItem('token', data.data.token)
     if (localStorage.getItem('token')) window.location.href = '/'
@@ -30,9 +29,9 @@ export default class SignIn extends Component {
   render() {
     const { email, password } = this.state
     return (
-      <div style={{ margin: '8em 20em 0 20em' }}>
+      <div className="container">
         <Form onFinish={this.handleSubmit} className="login-form">
-          <FormItem style={{ textAlign: 'center' }}>
+          <FormItem className="center">
             <Title>REITRIP</Title>
           </FormItem>
           <FormItem
@@ -42,7 +41,7 @@ export default class SignIn extends Component {
             <Input
               prefix={
                 <UserOutlined
-                  style={{ color: 'rgba(0,0,0,.25)' }}
+                  className="logo_color"
                 />}
               placeholder="Email"
               value={email}
@@ -55,7 +54,7 @@ export default class SignIn extends Component {
             <Input.Password
               prefix={
                 <LockOutlined
-                  style={{ color: 'rgba(0,0,0,.25)' }}
+                  className="logo_color"
                 />}
               placeholder="Password"
               value={password}
@@ -65,7 +64,7 @@ export default class SignIn extends Component {
             <Button
               type="primary"
               htmlType="submit"
-              style={{ width: '100%' }}
+              className="filled"
             >
               Log in
             </Button>

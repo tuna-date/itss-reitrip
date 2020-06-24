@@ -28,8 +28,8 @@ export default class SignUp extends Component {
         email: values.email,
         password: values.password
       })
-
-      window.location.href = '/signin'
+      if (data)
+        window.location.href = '/signin'
     } catch (err) {
       console.log('LOI CMNR');
     }
@@ -38,14 +38,10 @@ export default class SignUp extends Component {
   render() {
     const { username, email, password, confirmPassword, error } = this.state
     return (
-      <div style={{ margin: '8em 20em 0 20em' }}>
+      <div className="container">
         <Form onFinish={this.handleSubmit} className="login-form">
-          <FormItem style={{ textAlign: 'center' }}>
+          <FormItem className="center">
             <Title>REITRIP</Title>
-          </FormItem>
-
-          <FormItem style={{ textAlign: 'center' }}>
-            <span>{error}</span>
           </FormItem>
 
           <FormItem
@@ -55,7 +51,7 @@ export default class SignUp extends Component {
             <Input
               prefix={
                 <UserOutlined
-                  style={{ color: 'rgba(0,0,0,.25)' }}
+                  className="logo"
                 />}
               placeholder="Username"
               value={username}
@@ -68,7 +64,7 @@ export default class SignUp extends Component {
             <Input
               prefix={
                 <MailOutlined
-                  style={{ color: 'rgba(0,0,0,.25)' }}
+                  className="logo"
                 />}
               placeholder="Email"
               value={email}
@@ -81,7 +77,7 @@ export default class SignUp extends Component {
             <Input.Password
               prefix={
                 <LockOutlined
-                  style={{ color: 'rgba(0,0,0,.25)' }}
+                  className="logo"
                 />}
               placeholder="Password"
               value={password}
@@ -94,7 +90,7 @@ export default class SignUp extends Component {
             <Input.Password
               prefix={
                 <LockOutlined
-                  style={{ color: 'rgba(0,0,0,.25)' }}
+                  className="logo"
                 />}
               placeholder="Confirm password"
               value={confirmPassword}
@@ -105,7 +101,7 @@ export default class SignUp extends Component {
             <Button
               type="primary"
               htmlType="submit"
-              style={{ width: '100%' }}
+              className="filled"
             >
               Register
             </Button>

@@ -1,0 +1,19 @@
+.container {
+  margin: 8em 20% 0 20%;
+
+  @media screen and (max-width: 414px) {
+    margin: 8em 10% 0 10%;
+  }
+}
+
+.center {
+  text-align: center;
+}
+
+.logo_color {
+  color: rgba(0, 0, 0, 0.25);
+}
+
+.filled {
+  width: 100%;
+}
