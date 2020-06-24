@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Menu, Button, notification } from 'antd'
+import { Menu, Button, notification, Tooltip } from 'antd'
 import { Link } from 'react-router-dom'
 import RegisterPlace from 'components/RegisterPlace'
 import CreateNewPost from 'components/CreateNewPost'
@@ -99,21 +99,21 @@ export default class NavBar extends Component {
 
     return (
       <div>
-        <div style={{ width: 120, height: 31, background: 'rgba(255, 255, 255, 0.2)', margin: '16px 24px 16px 0', float: 'left', color: 'white' }} />
+        <div className="navbar_logo" />
         <Menu theme="dark" mode="horizontal">
           <Menu.Item>
             <Link to='/'>
               Home
             </Link>
           </Menu.Item>
-          <Menu.Item onClick={this.handleShowModal.bind(this)}>
-            {token ? <span>Register new Place</span> : ''}
+          <Menu.Item className="navbar_max" onClick={this.handleShowModal.bind(this)}>
+            {token ? <div className="ellipsis"><Tooltip title="Register new Place">Register new Place</Tooltip></div> : ''}
           </Menu.Item>
-          <Menu.Item onClick={this.handleShowPostModal.bind(this)}>
-            {token ? <span>CreateNewPost</span> : ''}
+          <Menu.Item className="navbar_max" onClick={this.handleShowPostModal.bind(this)}>
+            {token ? <div className="ellipsis"><Tooltip title="CreateNewPost">CreateNewPost</Tooltip></div> : ''}
           </Menu.Item>
           <Menu.Item
-            style={{ float: 'right' }}
+            className="item"
           >
             {token ?
               <Button type='danger' onClick={() => this.logout()}>
@@ -121,13 +121,13 @@ export default class NavBar extends Component {
               </Button>
               : ''}
           </Menu.Item>
-          <Menu.Item style={{ float: 'right' }}>
+          <Menu.Item className="item">
             {token ?
               <Link to='/myprofile'>
                 {user.username}
               </Link> : ''}
           </Menu.Item>
-          <Menu.Item style={{ float: 'right' }}>
+          <Menu.Item className="item">
             {token ? '' : <Link to='/signin'> Sign In </Link>}
           </Menu.Item>
         </Menu>

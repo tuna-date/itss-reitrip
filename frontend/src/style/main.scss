@@ -1,0 +1,37 @@
+@import "./signin.scss";
+@import "./signup.scss";
+@import "./home.scss";
+@import "./place.scss";
+@import "./post.scss";
+@import "./profile.scss";
+@import "./createpost.scss";
+@import "./navbar.scss";
+
+.header {
+  position: fixed;
+  z-index: 1;
+  width: 100%;
+}
+
+.app_content {
+  padding: 10px 50px;
+  margin: 64px 10em 0px 10em;
+  min-height: 100vh;
+
+  @media screen and (max-width: 1024px) {
+    margin: 64px 2em 0px 2em;
+  }
+
+  @media screen and (max-width: 768px) {
+    margin: 64px 2em 0px 2em;
+    padding: 0;
+  }
+
+  @media screen and (max-width: 375px) {
+    margin: 64px 0px 0px 0px;
+  }
+
+  @media screen and (max-width: 320px) {
+    padding: 0;
+  }
+}

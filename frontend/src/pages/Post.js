@@ -66,14 +66,14 @@ export default class Post extends Component {
 
     return (
       <div>
-        <Breadcrumb separator=">" style={{ margin: '16px 0px', fontSize: 20 }}>
+        <Breadcrumb separator=">" className="breadcrumb">
           <Breadcrumb.Item><Link to='/'>Home</Link></Breadcrumb.Item>
           <Breadcrumb.Item><Link to={`/place/${params.id}`}>{place && place.name}</Link></Breadcrumb.Item>
         </Breadcrumb>
         <h2>Post</h2>
-        <Row className="show-grid" style={{ background: '#f8f3f3', padding: '10px' }}>
-          <Col xs={6} md={8} className="gutter-row">
-            <h3 style={{ color: '#1890ff' }}>{post_owner && post_owner.username}</h3>
+        <Row className="show-grid post_content">
+          <Col className="gutter-row">
+            <h3 className="title_color">{post_owner && post_owner.username}</h3>
             <i>{post && post.created_at}</i>
             <div>
               {post && ReactHtmlParser(post.content)}
@@ -84,13 +84,12 @@ export default class Post extends Component {
           </Col>
         </Row>
 
-        <h3 style={{ marginTop: 16 }} >Comments</h3>
-        <Row gutter={[16, 16]} style={{ marginBottom: 16 }}>
+        <h3 className="comment" >Comments</h3>
+        <Row gutter={[16, 16]} className="list">
           {comments && comments.map((p) => (
-            <Col className="gutter-row" key={p.id} span={12}>
+            <Col className="gutter-row" key={p.id} lg={{ span: 12 }} md={{ span: 24 }} sm={{ span: 24 }} xs={{ span: 24 }}>
               <Card hoverable>
                 <i>{p.created_at}</i>
-
                 <Meta
                   title={p.user.username}
                   description={p.content}

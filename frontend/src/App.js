@@ -13,10 +13,10 @@ export default class App extends Component {
       <div className="App">
         <BrowserRouter>
           <Layout>
-            <Header style={{ position: 'fixed', zIndex: 1, width: '100%' }}>
+            <Header className="header">
               <NavBar />
             </Header>
-            <Content style={{ padding: '10px 50px', margin: '64px 10em 0px 10em', minHeight: '100vh' }}>
+            <Content className="app_content">
               <Router />
             </Content>
             <Footer>

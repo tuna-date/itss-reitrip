@@ -7,7 +7,7 @@ export default class Foot extends Component {
   render() {
     return (
       <div>
-        <Footer style={{ textAlign: "center" }}>お3ーさん</Footer>
+        <Footer className="center">お3ーさん</Footer>
       </div>
     )
   }

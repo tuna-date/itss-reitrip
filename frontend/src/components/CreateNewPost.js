@@ -33,7 +33,7 @@ export default class CreateNewPost extends Component {
     this.setState({ places: data.data })
   }
 
-  handleCancel(){
+  handleCancel() {
     this.setState({
       content: '',
       showModal: false,
@@ -47,7 +47,7 @@ export default class CreateNewPost extends Component {
     const { handleSubmit } = this.props
     const { content, showModal, placeId, places, valueSearch, rate } = this.state
     const placesOption = places && places.map((p) => <Option key={p.id} value={p.name}>
-      <Avatar size={18} src={p.image_url}></Avatar><span style={{ marginLeft: 4 }}>{p.name}</span>
+      <Avatar size={18} src={p.image_url}></Avatar><span className="option">{p.name}</span>
     </Option>)
 
     return (
@@ -68,13 +68,13 @@ export default class CreateNewPost extends Component {
             filterOption={(input, option) =>
               option.props.value.toLowerCase().indexOf(input.toLowerCase()) >= 0
             }
-            style={{ width: '-webkit-fill-available' }}
+            className="select"
             onChange={(value, option) => this.setState({ valueSearch: value, placeId: option.key })}
           >
             {placesOption}
           </Select>
-          <Rate allowHalf defaultValue={5} value={rate} onChange={(value) => this.setState({ rate: value })}/>
-          <ReactQuill theme="snow" value={content} onChange={(value) => this.setState({ content: value })}/>
+          <Rate allowHalf defaultValue={5} value={rate} onChange={(value) => this.setState({ rate: value })} />
+          <ReactQuill theme="snow" value={content} onChange={(value) => this.setState({ content: value })} />
         </Modal>
       </div>
     )

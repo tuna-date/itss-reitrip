@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Breadcrumb, Card, Avatar, Rate, Row, Col } from 'antd'
+import { Breadcrumb, Card, Avatar, Rate, Row, Col, Tooltip } from 'antd'
 import { UserOutlined } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
 import ReactHtmlParser from 'react-html-parser'
@@ -32,24 +32,24 @@ export default class Place extends Component {
 
     return (
       <div>
-        <Breadcrumb separator=">" style={{ margin: '16px 0px', fontSize: 20 }}>
+        <Breadcrumb separator=">" className="breadcrumb">
           <Breadcrumb.Item><Link to='/'>Home</Link></Breadcrumb.Item>
           <Breadcrumb.Item>Place</Breadcrumb.Item>
         </Breadcrumb>
         <Card>
           <Meta
-            avatar={<Avatar shape='square' size={100} src="https://res-4.cloudinary.com/enchanting/images/w_1600,h_700,c_fill,f_auto/et-web/2015/05/Enchanting-Travels-Vietnam-Tours-Nha-Trang-Hotels-Evason-Ana-Mandara-Nha-Trang-Hotel-in-Vietnam-Nha-Trang-beach-bbq/vietnam8217s-heritage-cities-and-beach-tour-trip-1.jpg" />}
-            title={place && place.name}
+            avatar={<Avatar shape='square' size={100} src={place && place.image_url} />}
+            title={<Tooltip title={place && place.name}>{place && place.name}</Tooltip>}
             description={<div>
-              <div>{place && place.services}</div>
-              <div>Location: {place && place.location}</div>
+              <div><Tooltip title={place && place.services}><div className="ellipsis">{place && place.services}</div></Tooltip></div>
+              <div>Location: {<Tooltip title={place && place.location}><span className="ellipsis">{place && place.location}</span></Tooltip>}</div>
               <div>
                 <Rate allowHalf disabled value={place && place.averageRate} />
               </div>
             </div>}
           />
         </Card>
-        <Row gutter={[16, 16]} style={{ marginTop: 16 }}>
+        <Row gutter={[16, 16]} className="listpost">
           {posts && posts.map((p) => (
             <Col className="gutter-row" key={p.id} span={24}>
               <Link to={`/place/${place.id}/post/${p.id}`}>
@@ -57,7 +57,7 @@ export default class Place extends Component {
                   <Meta
                     avatar={<Avatar size='large' icon={<UserOutlined />} />}
                     title={p.user.username}
-                    description={ <div style={{ position: 'relative', maxHeight: 200, overflow: 'auto' }}>{ReactHtmlParser(p.content)}</div> }
+                    description={<div className="meta">{ReactHtmlParser(p.content)}</div>}
                   />
                 </Card>
               </Link>
