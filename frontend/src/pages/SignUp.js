@@ -3,10 +3,11 @@ import { Form, Input, Button, Typography } from 'antd'
 import { Link } from 'react-router-dom'
 import { UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons'
 import API from 'utils/API'
+import { withTranslation } from 'react-i18next';
 
 const { Title } = Typography;
 const FormItem = Form.Item
-export default class SignUp extends Component {
+class SignUp extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -36,7 +37,8 @@ export default class SignUp extends Component {
   }
 
   render() {
-    const { username, email, password, confirmPassword, error } = this.state
+    const { username, email, password, confirmPassword } = this.state
+    const { t } = this.props
     return (
       <div className="container">
         <Form onFinish={this.handleSubmit} className="login-form">
@@ -46,53 +48,53 @@ export default class SignUp extends Component {
 
           <FormItem
             name="username"
-            rules={[{ required: true, message: 'Please input your username' }]}
+            rules={[{ required: true, message: `${t("userName")}` }]}
           >
             <Input
               prefix={
                 <UserOutlined
                   className="logo"
                 />}
-              placeholder="Username"
+              placeholder={t("name")}
               value={username}
             />
           </FormItem>
           <FormItem
             name="email"
-            rules={[{ required: true, message: 'Please input your email!' }]}
+            rules={[{ required: true, message: `${t("userEmail")}` }]}
           >
             <Input
               prefix={
                 <MailOutlined
                   className="logo"
                 />}
-              placeholder="Email"
+              placeholder={t("email")}
               value={email}
             />
           </FormItem>
           <FormItem
             name="password"
-            rules={[{ required: true, message: 'Please input your Password!' }]}
+            rules={[{ required: true, message: `${t("userPassword")}` }]}
           >
             <Input.Password
               prefix={
                 <LockOutlined
                   className="logo"
                 />}
-              placeholder="Password"
+              placeholder={t("password")}
               value={password}
             />
           </FormItem>
           <FormItem
             name="confirmPassword"
-            rules={[{ required: true, message: 'Please confirm your password!' }]}
+            rules={[{ required: true, message: `${t("userConfirm")}` }]}
           >
             <Input.Password
               prefix={
                 <LockOutlined
                   className="logo"
                 />}
-              placeholder="Confirm password"
+              placeholder={t("confirm")}
               value={confirmPassword}
             />
           </FormItem>
@@ -103,12 +105,14 @@ export default class SignUp extends Component {
               htmlType="submit"
               className="filled"
             >
-              Register
+              {t("registerNow")}
             </Button>
-            Or back to <Link to='/signin'>Login</Link>
+            {t("orBack")} <Link to='/signin'>{t("signin")}</Link>
           </FormItem>
         </Form>
       </div>
     )
   }
 }
+
+export default withTranslation()(SignUp)

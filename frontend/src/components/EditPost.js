@@ -2,8 +2,9 @@ import React, { Component } from 'react'
 import { Modal, Rate, Input, notification } from 'antd'
 import ReactQuill from 'react-quill'
 import API from 'utils/API'
+import { withTranslation } from 'react-i18next';
 
-export default class EditPost extends Component {
+class EditPost extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -33,6 +34,7 @@ export default class EditPost extends Component {
   }
 
   async handleSubmit(placeId, rate, content, postId) {
+    const { t } = this.props
     let updatedPost = await API.put(`/places/${placeId}/posts`, {
       id: postId,
       content: content,
@@ -45,14 +47,14 @@ export default class EditPost extends Component {
 
     if (updatedPost.data) {
       notification.success({
-        message: 'SUCCESS',
-        description: `UPDATED SUCCESSFULL`
+        message: `${t("success")}`,
+        description: `${t("updateSuccess")}`
       })
       localStorage.setItem(`${updatedPost.data.id}`, updatedPost.data.rate_score)
     } else {
       notification.error({
-        message: 'ERROR',
-        description: `SERVER DOWN`
+        message: `${t("error")}`,
+        description: `${t("serverDown")}`
       })
     }
     window.location.reload()
@@ -63,13 +65,13 @@ export default class EditPost extends Component {
   }
 
   render() {
-    const { postId } = this.props
+    const { postId, t } = this.props
     const { content, showModal, placeId, place, rate } = this.state
 
     return (
       <div>
         <Modal
-          title='Create New Post'
+          title={t("edit")}
           visible={showModal}
           onOk={() => {
             this.handleSubmit(placeId, rate, content, postId)
@@ -85,3 +87,5 @@ export default class EditPost extends Component {
     )
   }
 }
+
+export default withTranslation()(EditPost)

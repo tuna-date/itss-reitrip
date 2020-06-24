@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { Modal, Form, Input } from 'antd'
+import { withTranslation } from 'react-i18next';
 
-export default class EditProfile extends Component {
+class EditProfile extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -24,13 +25,13 @@ export default class EditProfile extends Component {
   }
 
   render() {
-    const { handleSubmit } = this.props
+    const { handleSubmit, t } = this.props
     const { username, avatar_url, showModal } = this.state
-    
+
     return (
       <div>
         <Modal
-          title="EDIT PROFILE"
+          title={t("editProfile")}
           visible={showModal}
           onOk={() => {
             handleSubmit(username, avatar_url)
@@ -46,15 +47,15 @@ export default class EditProfile extends Component {
           >
             <Form.Item
               name="username"
-              rules={[{ required: true, message: 'Please input username!' }]}
+              rules={[{ required: true, message: `${t("userName")}` }]}
             >
-              <Input placeholder="Name" onChange={(e) => this.setState({ username: e.target.value })} />
+              <Input placeholder={t("name")} onChange={(e) => this.setState({ username: e.target.value })} />
             </Form.Item>
             <Form.Item
               name="avatar_url"
-              rules={[{ required: true, message: 'Please input Url!' }]}
+              rules={[{ required: true, message: `${t("url")}` }]}
             >
-              <Input placeholder="Avatar URL" onChange={(e) => this.setState({ avatar_url: e.target.value })} />
+              <Input placeholder={t("avatarUrl")} onChange={(e) => this.setState({ avatar_url: e.target.value })} />
             </Form.Item>
           </Form>
         </Modal>
@@ -62,3 +63,5 @@ export default class EditProfile extends Component {
     )
   }
 }
+
+export default withTranslation()(EditProfile)

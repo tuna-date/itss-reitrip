@@ -3,10 +3,11 @@ import { Breadcrumb, Card, Row, Col, Button, Form, Input, Rate } from 'antd'
 import { Link } from 'react-router-dom'
 import ReactHtmlParser from 'react-html-parser'
 import API from 'utils/API'
+import { withTranslation } from 'react-i18next';
 
 const { Meta } = Card
 
-export default class Post extends Component {
+class Post extends Component {
   constructor() {
     super()
     this.state = {
@@ -61,16 +62,15 @@ export default class Post extends Component {
 
   render() {
     const { place, post, post_owner, comments, token, rate_score } = this.state
-    const { match: { params } } = this.props
-    console.log(rate_score);
+    const { match: { params }, t } = this.props
 
     return (
       <div>
         <Breadcrumb separator=">" className="breadcrumb">
-          <Breadcrumb.Item><Link to='/'>Home</Link></Breadcrumb.Item>
+          <Breadcrumb.Item><Link to='/'>{t("home")}</Link></Breadcrumb.Item>
           <Breadcrumb.Item><Link to={`/place/${params.id}`}>{place && place.name}</Link></Breadcrumb.Item>
         </Breadcrumb>
-        <h2>Post</h2>
+        <h2>{t("post")}</h2>
         <Row className="show-grid post_content">
           <Col className="gutter-row">
             <h3 className="title_color">{post_owner && post_owner.username}</h3>
@@ -84,7 +84,7 @@ export default class Post extends Component {
           </Col>
         </Row>
 
-        <h3 className="comment" >Comments</h3>
+        <h3 className="comment" >{t("comments")}</h3>
         <Row gutter={[16, 16]} className="list">
           {comments && comments.map((p) => (
             <Col className="gutter-row" key={p.id} lg={{ span: 12 }} md={{ span: 24 }} sm={{ span: 24 }} xs={{ span: 24 }}>
@@ -104,12 +104,14 @@ export default class Post extends Component {
               <Input allowClear />
             </Form.Item>
             <Button type="primary" htmlType="submit">
-              Comment
+              {t("comment")}
             </Button>
           </Form>
-          : <div>You Must Login to Comment</div>
+          : <div>{t("commentError")}</div>
         }
       </div>
     )
   }
 }
+
+export default withTranslation()(Post)

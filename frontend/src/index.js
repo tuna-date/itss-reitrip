@@ -4,11 +4,16 @@ import 'antd/dist/antd.css';
 import 'react-quill/dist/quill.snow.css';
 import 'style/main.scss';
 import App from './App';
+import { I18nextProvider } from 'react-i18next';
+import i18n from "./i18n";
+
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
   // <React.StrictMode>
-  <App />,
+  <I18nextProvider i18n={i18n}>
+    <App />
+  </I18nextProvider>,
   document.getElementById('root')
 );
 

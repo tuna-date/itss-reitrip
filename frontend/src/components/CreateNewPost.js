@@ -2,10 +2,11 @@ import React, { Component } from 'react'
 import { Modal, Select, Avatar, Rate } from 'antd'
 import ReactQuill from 'react-quill'
 import API from 'utils/API'
+import { withTranslation } from 'react-i18next';
 
 const { Option } = Select
 
-export default class CreateNewPost extends Component {
+class CreateNewPost extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -44,7 +45,7 @@ export default class CreateNewPost extends Component {
   }
 
   render() {
-    const { handleSubmit } = this.props
+    const { handleSubmit, t } = this.props
     const { content, showModal, placeId, places, valueSearch, rate } = this.state
     const placesOption = places && places.map((p) => <Option key={p.id} value={p.name}>
       <Avatar size={18} src={p.image_url}></Avatar><span className="option">{p.name}</span>
@@ -53,17 +54,17 @@ export default class CreateNewPost extends Component {
     return (
       <div>
         <Modal
-          title='Create New Post'
+          title={t("create")}
           visible={showModal}
           onOk={() => {
-            handleSubmit(placeId, rate, content)
+            handleSubmit(placeId, rate, content, t)
             this.setState({ showModal: false })
           }}
           onCancel={this.handleCancel.bind(this)}
         >
           <Select
             showSearch
-            placeholder='Choose a place'
+            placeholder={t("choosePlace")}
             value={valueSearch}
             filterOption={(input, option) =>
               option.props.value.toLowerCase().indexOf(input.toLowerCase()) >= 0
@@ -80,3 +81,5 @@ export default class CreateNewPost extends Component {
     )
   }
 }
+
+export default withTranslation()(CreateNewPost)

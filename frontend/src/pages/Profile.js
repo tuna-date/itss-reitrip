@@ -6,11 +6,12 @@ import ReactHtmlParser from 'react-html-parser'
 import API from 'utils/API'
 import EditPost from 'components/EditPost'
 import EditProfile from 'components/EditProfile'
+import { withTranslation } from 'react-i18next';
 
 const { Meta } = Card
 const { Title } = Typography
 
-export default class Place extends Component {
+class Profile extends Component {
   constructor() {
     super()
     this.state = {
@@ -65,6 +66,7 @@ export default class Place extends Component {
   }
 
   async handleEditProfile(username, avatar_url) {
+    const { t } = this.props
     let token = localStorage.getItem('token')
     let user = await API.put('/users', {
       username: username,
@@ -76,13 +78,13 @@ export default class Place extends Component {
     })
     if (user.data) {
       notification.success({
-        message: 'SUCCESS',
-        description: `UPDATED SUCCESSFULL`
+        message: `${t("success")}`,
+        description: `${t("updateSuccess")}`
       })
     } else {
       notification.error({
-        message: 'ERROR',
-        description: `SERVER DOWN`
+        message: `${t("error")}`,
+        description: `${t("serverDown")}`
       })
     }
     window.location.reload()
@@ -90,6 +92,7 @@ export default class Place extends Component {
 
   async handleDelete(id) {
     const { posts } = this.state
+    const { t } = this.props
     let token = localStorage.getItem('token')
     let deleted = await API.delete(`/places/3/posts`, {
       data: {
@@ -101,13 +104,13 @@ export default class Place extends Component {
     })
     if (deleted.data) {
       notification.success({
-        message: 'SUCCESS',
-        description: `${deleted.data.status} SUCCESSFULL`
+        message: `${t("success")}`,
+        description: `${deleted.data.status} ${t("deleteSuccess")}`
       })
     } else {
       notification.error({
-        message: 'ERROR',
-        description: `SERVER DOWN`
+        message: `${t("error")}`,
+        description: `${t("serverDown")}`
       })
     }
     let newPosts = posts.filter((post) => post.id !== id)
@@ -116,14 +119,13 @@ export default class Place extends Component {
 
   render() {
     const { user, posts, showProfileModal } = this.state
-    let token = localStorage.getItem('token')
-    console.log(token);
+    const { t } = this.props
 
     return (
       <div>
         <Breadcrumb separator=">" className="breadcrumb">
-          <Breadcrumb.Item><Link to='/'>Home</Link></Breadcrumb.Item>
-          <Breadcrumb.Item>My Profile</Breadcrumb.Item>
+          <Breadcrumb.Item><Link to='/'>{t("home")}</Link></Breadcrumb.Item>
+          <Breadcrumb.Item>{t("profile")}</Breadcrumb.Item>
         </Breadcrumb>
         <Card actions={[<EditOutlined key="edit" onClick={this.handleShowProfileModal.bind(this)} />]}>
           <Meta
@@ -174,3 +176,5 @@ export default class Place extends Component {
     )
   }
 }
+
+export default withTranslation()(Profile)
