@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Menu, Button, notification, Radio } from 'antd'
+import { Menu, Button, notification } from 'antd'
 import { Link } from 'react-router-dom'
 import RegisterPlace from 'components/RegisterPlace'
 import CreateNewPost from 'components/CreateNewPost'
@@ -35,9 +35,9 @@ export default class NavBar extends Component {
   handleShowPostModal() {
     this.setState({ showPostModal: true, showModal: false })
   }
-  
-  async handleSubmit(name, services, location, imageUrl) {    
-    let token = localStorage.getItem('token')    
+
+  async handleSubmit(name, services, location, imageUrl) {
+    let token = localStorage.getItem('token')
     let data = await API.post('/places', {
       name: name,
       location: location,
@@ -48,8 +48,8 @@ export default class NavBar extends Component {
         Authorization: token
       }
     })
-    
-    if(data.data) {
+
+    if (data.data) {
       notification.success({
         message: 'SUCCESS',
         description: `${data.data.name} is now on pending, waitign for ADMIN to approve`
@@ -62,8 +62,8 @@ export default class NavBar extends Component {
     }
   }
 
-  async handleSubmitPost(placeId, rateScore, content) {    
-    let token = localStorage.getItem('token')    
+  async handleSubmitPost(placeId, rateScore, content) {
+    let token = localStorage.getItem('token')
     let postsData = await API.post(`/places/${placeId}/posts`, {
       content: content,
       rate_score: rateScore
@@ -72,8 +72,8 @@ export default class NavBar extends Component {
         Authorization: token
       }
     })
-    
-    if(postsData.data) {
+
+    if (postsData.data) {
       notification.success({
         message: 'SUCCESS',
         description: `POST CREATED, RATED ${postsData.data.rate_score} stars`
@@ -84,26 +84,7 @@ export default class NavBar extends Component {
         description: `SERVER DOWN`
       })
     }
-
-    // let rateScoreData = await API.post(`/places/${placeId}/rate`, {
-    //   rate_score: rateScore
-    // }, {
-    //   headers: {
-    //     Authorization: token
-    //   }
-    // })
-
-    // if(rateScoreData.data) {
-    //   notification.success({
-    //     message: 'SUCCESS',
-    //     description: `RATED ${rateScoreData.data.rate_score} stars`
-    //   })
-    // } else {
-    //   notification.error({
-    //     message: 'ERROR',
-    //     description: `SERVER DOWN`
-    //   })
-    // }
+    localStorage.setItem(`${postsData.data.id}`, postsData.data.rate_score)
   }
 
 
@@ -150,8 +131,8 @@ export default class NavBar extends Component {
             {token ? '' : <Link to='/signin'> Sign In </Link>}
           </Menu.Item>
         </Menu>
-        <RegisterPlace showModal={showModal} handleSubmit={this.handleSubmit}/>
-        <CreateNewPost showPostModal={showPostModal} handleSubmit={this.handleSubmitPost}/>
+        <RegisterPlace showModal={showModal} handleSubmit={this.handleSubmit} />
+        <CreateNewPost showPostModal={showPostModal} handleSubmit={this.handleSubmitPost} />
       </div>
     )
   }

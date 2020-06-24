@@ -33,16 +33,22 @@ export default class EditPost extends Component {
   }
 
   async handleSubmit(placeId, rate, content, postId) {
-    let updatedPost = API.put(`/places/${placeId}/posts`, {
+    let updatedPost = await API.put(`/places/${placeId}/posts`, {
       id: postId,
       content: content,
       rate_score: rate
+    }, {
+      headers: {
+        Authorization: localStorage.getItem('token')
+      }
     })
+
     if (updatedPost.data) {
       notification.success({
         message: 'SUCCESS',
         description: `UPDATED SUCCESSFULL`
       })
+      localStorage.setItem(`${updatedPost.data.id}`, updatedPost.data.rate_score)
     } else {
       notification.error({
         message: 'ERROR',
@@ -50,10 +56,9 @@ export default class EditPost extends Component {
       })
     }
     window.location.reload()
-
   }
 
-  handleCancel(){
+  handleCancel() {
     this.setState({ showModal: false })
   }
 
@@ -73,8 +78,8 @@ export default class EditPost extends Component {
           onCancel={this.handleCancel.bind(this)}
         >
           <Input disabled defaultValue={place && place.name} />
-          <Rate allowHalf defaultValue={5} value={rate} onChange={(value) => this.setState({ rate: value })}/>
-          <ReactQuill theme="snow" value={content} onChange={(value) => this.setState({ content: value })}/>
+          <Rate allowHalf defaultValue={5} value={rate} onChange={(value) => this.setState({ rate: value })} />
+          <ReactQuill theme="snow" value={content} onChange={(value) => this.setState({ content: value })} />
         </Modal>
       </div>
     )

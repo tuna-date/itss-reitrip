@@ -33,7 +33,7 @@ export default class Place extends Component {
       }
     })
 
-    for(let i = 0; i < postsData.data.lenght; i++) {
+    for (let i = 0; i < postsData.data.lenght; i++) {
       postsData.data[i].showPostModal = false
     }
 
@@ -58,9 +58,9 @@ export default class Place extends Component {
 
   handleShowProfileModal() {
     const { posts } = this.state
-    for(let i = 0; i < posts.length; i++){
+    for (let i = 0; i < posts.length; i++) {
       posts[i].showPostModal = false
-    }    
+    }
     this.setState({ showProfileModal: true, posts: posts })
   }
 
@@ -92,8 +92,9 @@ export default class Place extends Component {
     const { posts } = this.state
     let token = localStorage.getItem('token')
     let deleted = await API.delete(`/places/3/posts`, {
-      id: id
-    }, {
+      data: {
+        id: id
+      },
       headers: {
         Authorization: token
       }
@@ -110,15 +111,14 @@ export default class Place extends Component {
       })
     }
     let newPosts = posts.filter((post) => post.id !== id)
-    this.setState({ posts: newPosts})
-    // window.location.reload()
+    this.setState({ posts: newPosts })
   }
 
   render() {
     const { user, posts, showProfileModal } = this.state
     let token = localStorage.getItem('token')
     console.log(token);
-    
+
     return (
       <div>
         <Breadcrumb separator=">" style={{ margin: '16px 0px', fontSize: 20 }}>
@@ -141,7 +141,7 @@ export default class Place extends Component {
                 hoverable
                 actions={[
                   <EditOutlined key="edit" onClick={this.handleShowPostModal.bind(this, index)} />,
-                  <DeleteOutlined key="delete" onClick={this.handleDelete.bind(this, p.id)}/>
+                  <DeleteOutlined key="delete" onClick={this.handleDelete.bind(this, p.id)} />
                 ]}
               >
                 <Link to={`/place/${p.placeId}/post/${p.id}`}>
@@ -159,7 +159,7 @@ export default class Place extends Component {
                 content={p.content}
                 placeId={p.placeId}
                 postId={p.id}
-                rate_score={p.rate_score}
+                rate_score={localStorage.getItem(`${p.id}`) ?? 5}
               />
             </Col>
           ))}
