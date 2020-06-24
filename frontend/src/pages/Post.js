@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import { Breadcrumb, Card, Row, Col, Button, Form, Input } from 'antd'
-import { LikeOutlined } from '@ant-design/icons'
+import { Breadcrumb, Card, Row, Col, Button, Form, Input, Rate } from 'antd'
 import { Link } from 'react-router-dom'
 import ReactHtmlParser from 'react-html-parser'
 import API from 'utils/API'
@@ -14,7 +13,8 @@ export default class Post extends Component {
       place: null,
       post: null,
       post_owner: null,
-      comments: null
+      comments: null,
+      rate_score: null
     }
   }
 
@@ -30,10 +30,15 @@ export default class Post extends Component {
       commentsData.data[i].user = user.data
     }
     let token = localStorage.getItem('token')
-    this.setState({ place: places.data, post: postDetail.data, post_owner: post_owner.data, comments: commentsData.data, token: token })
-  }
-
-  upVote() {
+    let rate_score = localStorage.getItem(`${params.postid}`)
+    this.setState({
+      place: places.data,
+      post: postDetail.data,
+      post_owner: post_owner.data,
+      comments: commentsData.data,
+      token: token,
+      rate_score: rate_score
+    })
 
   }
 
@@ -55,8 +60,9 @@ export default class Post extends Component {
   }
 
   render() {
-    const { place, post, post_owner, comments, token } = this.state
+    const { place, post, post_owner, comments, token, rate_score } = this.state
     const { match: { params } } = this.props
+    console.log(rate_score);
 
     return (
       <div>
@@ -70,11 +76,11 @@ export default class Post extends Component {
             <h3 style={{ color: '#1890ff' }}>{post_owner && post_owner.username}</h3>
             <i>{post && post.created_at}</i>
             <div>
-              { post && ReactHtmlParser(post.content)}
+              {post && ReactHtmlParser(post.content)}
             </div>
-            <Button variant="contained" color="primary" className="float-right" onClick={this.upVote}>
-              <LikeOutlined />
-            </Button>
+            {rate_score
+              ? <Rate allowHalf value={rate_score} disabled />
+              : <Rate value={5} disabled />}
           </Col>
         </Row>
 

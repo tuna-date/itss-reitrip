@@ -55,7 +55,7 @@ export default class Home extends Component {
     </Col>)
 
     return (
-      <div style={{ height: "100vh" }}>
+      <div>
         <Breadcrumb separator=">" style={{ margin: '16px 0px', fontSize: 20 }}>
           <Breadcrumb.Item><Link to='/'>Home</Link></Breadcrumb.Item>
         </Breadcrumb>
