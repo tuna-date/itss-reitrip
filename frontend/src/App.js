@@ -8,6 +8,12 @@ import Foot from './components/Foot'
 const { Header, Footer, Content } = Layout
 
 export default class App extends Component {
+  constructor() {
+    super()
+    this.state = {
+      value: 'en'
+    }
+  }
   render() {
     return (
       <div className="App">

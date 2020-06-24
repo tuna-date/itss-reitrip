@@ -3,11 +3,12 @@ import { Form, Input, Button, Typography } from 'antd'
 import { Link } from 'react-router-dom'
 import { UserOutlined, LockOutlined } from '@ant-design/icons'
 import API from 'utils/API'
+import { withTranslation } from 'react-i18next';
 
 const { Title } = Typography;
 const FormItem = Form.Item
 
-export default class SignIn extends Component {
+class SignIn extends Component {
   constructor() {
     super()
     this.state = {
@@ -28,6 +29,7 @@ export default class SignIn extends Component {
 
   render() {
     const { email, password } = this.state
+    const { t } = this.props
     return (
       <div className="container">
         <Form onFinish={this.handleSubmit} className="login-form">
@@ -36,27 +38,27 @@ export default class SignIn extends Component {
           </FormItem>
           <FormItem
             name="email"
-            rules={[{ required: true, message: 'Please input your email!' }]}
+            rules={[{ required: true, message: `${t("userEmail")}` }]}
           >
             <Input
               prefix={
                 <UserOutlined
                   className="logo_color"
                 />}
-              placeholder="Email"
+              placeholder={t("email")}
               value={email}
             />
           </FormItem>
           <FormItem
             name="password"
-            rules={[{ required: true, message: 'Please input your Password!' }]}
+            rules={[{ required: true, message: `${t("userPassword")}` }]}
           >
             <Input.Password
               prefix={
                 <LockOutlined
                   className="logo_color"
                 />}
-              placeholder="Password"
+              placeholder={t("password")}
               value={password}
             />
           </FormItem>
@@ -66,9 +68,9 @@ export default class SignIn extends Component {
               htmlType="submit"
               className="filled"
             >
-              Log in
+              {t("signin")}
             </Button>
-            Or <Link to='/signup'>register now</Link>
+            {t("or")} <Link to='/signup'>{t("registerNow")}</Link>
           </FormItem>
         </Form>
       </div>
@@ -76,3 +78,4 @@ export default class SignIn extends Component {
   }
 }
 
+export default withTranslation()(SignIn)

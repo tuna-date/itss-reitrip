@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { Modal, Form, Input } from 'antd'
+import { withTranslation } from 'react-i18next';
 
-export default class RegisterPlace extends Component {
+class RegisterPlace extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -30,16 +31,16 @@ export default class RegisterPlace extends Component {
   }
 
   render() {
-    const { handleSubmit } = this.props
+    const { handleSubmit, t } = this.props
     const { name, services, location, imageUrl, showModal } = this.state
 
     return (
       <div>
         <Modal
-          title="Register new Place"
+          title={t("register")}
           visible={showModal}
           onOk={() => {
-            handleSubmit(name, services, location, imageUrl)
+            handleSubmit(name, services, location, imageUrl, t)
             this.setState({ showModal: false })
           }}
           onCancel={this.handleCancel.bind(this)}
@@ -47,27 +48,27 @@ export default class RegisterPlace extends Component {
           <Form>
             <Form.Item
               name="name"
-              rules={[{ required: true, message: 'Please input place name!' }]}
+              rules={[{ required: true, message: `${t("placeName")}` }]}
             >
-              <Input placeholder="Name" onChange={(e) => this.setState({ name: e.target.value })}/>
+              <Input placeholder={t("name")} onChange={(e) => this.setState({ name: e.target.value })} />
             </Form.Item>
             <Form.Item
               name="service"
-              rules={[{ required: true, message: 'Please input place service!' }]}
+              rules={[{ required: true, message: `${t("placeService")}` }]}
             >
-              <Input placeholder="Service" onChange={(e) => this.setState({ services: e.target.value })}/>
+              <Input placeholder={t("service")} onChange={(e) => this.setState({ services: e.target.value })} />
             </Form.Item>
             <Form.Item
               name="location"
-              rules={[{ required: true, message: 'Please input place location!' }]}
+              rules={[{ required: true, message: `${t("placeLocation")}` }]}
             >
-              <Input placeholder="Location" onChange={(e) => this.setState({ location: e.target.value })}/>
+              <Input placeholder={t("location")} onChange={(e) => this.setState({ location: e.target.value })} />
             </Form.Item>
             <Form.Item
               name="imageUrl"
-              rules={[{ required: true, message: 'Please input place imageUrl!' }]}
+              rules={[{ required: true, message: `${t("placeImageUrl")}` }]}
             >
-              <Input placeholder="ImageUrl" onChange={(e) => this.setState({ imageUrl: e.target.value })}/>
+              <Input placeholder={t("imageUrl")} onChange={(e) => this.setState({ imageUrl: e.target.value })} />
             </Form.Item>
           </Form>
         </Modal>
@@ -75,3 +76,5 @@ export default class RegisterPlace extends Component {
     )
   }
 }
+
+export default withTranslation()(RegisterPlace)

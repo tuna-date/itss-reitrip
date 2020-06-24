@@ -4,10 +4,11 @@ import { UserOutlined } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
 import ReactHtmlParser from 'react-html-parser'
 import API from 'utils/API'
+import { withTranslation } from 'react-i18next';
 
 const { Meta } = Card
 
-export default class Place extends Component {
+class Place extends Component {
   constructor() {
     super()
     this.state = {
@@ -29,12 +30,13 @@ export default class Place extends Component {
 
   render() {
     const { place, posts } = this.state
+    const { t } = this.props
 
     return (
       <div>
         <Breadcrumb separator=">" className="breadcrumb">
-          <Breadcrumb.Item><Link to='/'>Home</Link></Breadcrumb.Item>
-          <Breadcrumb.Item>Place</Breadcrumb.Item>
+          <Breadcrumb.Item><Link to='/'>{t("home")}</Link></Breadcrumb.Item>
+          <Breadcrumb.Item>{t("place")}</Breadcrumb.Item>
         </Breadcrumb>
         <Card>
           <Meta
@@ -42,7 +44,7 @@ export default class Place extends Component {
             title={<Tooltip title={place && place.name}>{place && place.name}</Tooltip>}
             description={<div>
               <div><Tooltip title={place && place.services}><div className="ellipsis">{place && place.services}</div></Tooltip></div>
-              <div>Location: {<Tooltip title={place && place.location}><span className="ellipsis">{place && place.location}</span></Tooltip>}</div>
+              <div>{t("location")}: {<Tooltip title={place && place.location}><span className="ellipsis">{place && place.location}</span></Tooltip>}</div>
               <div>
                 <Rate allowHalf disabled value={place && place.averageRate} />
               </div>
@@ -68,3 +70,5 @@ export default class Place extends Component {
     )
   }
 }
+
+export default withTranslation()(Place)
