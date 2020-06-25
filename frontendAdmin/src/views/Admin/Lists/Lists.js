@@ -16,6 +16,7 @@ import $ from 'jquery';
 import Spinner from "reactstrap/es/Spinner";
 import assets from "../../Config/assets";
 import {
+  comments, deleteComment, deletePost,
   getUserData,
   listposts,
   // company, listCities, listDistricts, listWards,
@@ -59,67 +60,9 @@ class EditPosts extends Component {
     });
   }
 
-  // updateAgency() {
-  //   let requestData = JSON.stringify({company: this.state.agency});
-  //   updateCompany(this.state.agencyId, requestData).then(() => {
-  //     const getAlert = () => (
-  //       <SweetAlert
-  //         success
-  //         timeout={1500}
-  //         onConfirm={() => this.props.history.push('/admin/agencies')}
-  //       >
-  //         Bạn đã cập nhật thông tin công ty môi giới thành công !
-  //       </SweetAlert>
-  //     );
-  //     this.setState({
-  //       alert: getAlert()
-  //     });
-  //   })
-  //     .catch((err) => console.log(err))
-  // }
-
    componentDidMount() {
-      post(this.state.agencyId, this.state.placeId).then(resp => {this.setState({post:resp,isLoaded:true}, () => {console.log(resp)})})
-  }
-
-  triggerUploadImage() {
-    document.getElementById("avatar-path").click();
-  }
-
-  uploadImage() {
-    let preview = document.querySelector('#logo');
-    let file = document.querySelector('#avatar-path').files[0]; //sames as here
-    if (file.size < assets.maxSize) {
-      let formData = new FormData();
-      formData.append("file[new_image_path][]", file);
-      upload(formData).then((responseJson) => {
-        preview.src = responseJson.data.files[0].relativeUrl;
-        this.setState({
-          logo: responseJson.data.files[0].imageUrl,
-          agency: {
-            ...this.state.agency,
-            avatar_path: responseJson.data.files[0].relativeUrl
-          }
-        });
-
-      }, function (error) {
-        console.log(error);
-      });
-    } else {
-      const getAlert = () => (
-        <SweetAlert
-          timeout={1500}
-          confirmBtnBsStyle="danger"
-          onConfirm={() => this.hideAlert()}
-        >
-          Kích thước ảnh quá lớn ! Dung lượng tối đa cho ảnh là 10MB.
-        </SweetAlert>
-      );
-
-      this.setState({
-        alert: getAlert()
-      });
-    }
+      post(this.state.agencyId, this.state.placeId).then(resp => {this.setState({post:resp,isLoaded:true}, () => {console.log(resp)})});
+      comments(this.state.agencyId, this.state.placeId).then(resp => (this.setState({comments:resp, isCommentLoaded:true})));
   }
 
   hideAlert() {
@@ -129,44 +72,10 @@ class EditPosts extends Component {
     console.log('Hiding alert...');
   }
 
-  onChange(content) {
-    this.setState({
-      agency: {
-        ...this.state.agency,
-        description: content
-      }
-    });
-  }
-
-  onImageUpload = (fileList) => {
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      ReactSummernote.insertImage(reader.result);
-    };
-    reader.readAsDataURL(fileList[0]);
-  };
-
   toggleLarge() {
     this.setState({
       showModal: !this.state.showModal,
     });
-  }
-
-
-
-  handleChangeData = (event) => {
-    let input = event.target;
-    this.setState({
-      agency:
-        {
-          ...this.state.agency,
-          [input.name]: input.value
-        }
-    });
-  };
-  handleChange(event) {
-    this.state.filterField[event.target.name] = event.target.value;
-    this.setState(({filterField: this.state.filterField}));
   }
 
   isSuitableCompany(company) {
@@ -176,43 +85,22 @@ class EditPosts extends Component {
       ((company.number_phone && company.number_phone.toLowerCase().indexOf(fields.number_phone.toLowerCase())) !== -1);
   }
 
-  handleInputDispatch = (event) => {
-    const target = event.target;
-    let name = target.name;
-    let value = null;
-
-    if (name.includes("[]")) {
-      value = [target.value];
-      name = name.replace('[]', '');
-    } else {
-      value = target.value;
-    }
-
-
-    this.setState({
-      agency: {
-        ...this.state.agency,
-        [name]: value
-      }
-    }, () => {
-    });
-  };
-
   renderCompanyRow() {
     let filtering = (this.state.filterField.name || this.state.filterField.email || this.state.filterField.number_phone);
     let companies;
     if (!filtering) {
-      companies = this.state.post;
+      companies = this.state.comments;
     } else {
-      companies = this.state.post.filter(x => this.isSuitableCompany(x));
+      companies = this.state.comments.filter(x => this.isSuitableCompany(x));
     }
-    console.log(companies);
-    return [companies].map((data, index) =>
-      <tr key={data.id}>
-        <td>{index + 1}</td>
+    console.log("xem comment", companies);
+    return companies.map((data, index) =>
+      (
+        <tr key={data.id}>
+        <td>{data.id}</td>
         <td>{data.user_id}</td>
         <td>{data.place_id}</td>
-        <td>{data.content}</td>
+        <td>{(data.content && data.content.length > 100) ? (data.content.slice(0, 100) + "...") : data.content}</td>
         <td>{data.totalVotes}</td>
         <td>
           <Button onClick={() => this.props.history.push("/lists/" + data.id + "/place/" + data.place_id)} className="mr-1 btn-info">
@@ -223,13 +111,68 @@ class EditPosts extends Component {
           {/*}}>*/}
           {/*  <i className="cui-pencil icons font-lg "/>*/}
           {/*</Button>*/}
-          <Button className="mr-1 btn-danger" onClick={() => this.renderAlert(data.id, index)}>
-            <i className="cui-trash icons font-lg "/>
-          </Button>
+          {/*<Button className="mr-1 btn-danger" onClick={() => this.renderAlertComment(data.id, index)}>*/}
+          {/*  <i className="cui-trash icons font-lg "/>*/}
+          {/*</Button>*/}
         </td>
-      </tr>);
+      </tr>));
   }
 
+
+  renderAlertComment(id,index){
+    console.log(id, index);
+    const getAlert = () => (
+      <SweetAlert
+        custom
+        showCancel
+        confirmBtnText="Xóa"
+        cancelBtnText="Hủy"
+        confirmBtnBsStyle="primary"
+        cancelBtnBsStyle="default"
+        title="Bạn chắc chắn muốn xóa?"
+        onConfirm={()=>this.deleteComment(id,index)}
+        onCancel={() => this.hideAlert()}
+      >
+        Bạn không thể khôi phục được thông tin đã xóa!
+      </SweetAlert>
+
+    );
+    this.setState({
+      alert: getAlert()
+    });
+  }
+
+  deleteComment(id, index) {
+    console.log("dmmmmmmm");
+    deleteComment(this.state.agencyId, this.state.placeId, id).then((responseJson) => {
+      if(responseJson) {
+        const getAlert = () => (
+          <SweetAlert
+            success
+            timeout={1500}
+            onConfirm={() => {this.hideAlert();this.setState({data:this.state.data.splice(index,1)})}}
+          >
+            {responseJson.message}
+          </SweetAlert>
+        );
+        this.setState({
+          alert: getAlert()
+        });
+      }else{
+        const getAlert = () => (
+          <SweetAlert
+            onConfirm={() => this.hideAlert()}
+          >
+            {responseJson.errors.message}
+          </SweetAlert>
+        );
+        this.setState({
+          alert: getAlert()
+        });
+      }
+    })
+      .catch((err) => console.log(err))
+  }
 
   checkoutModal() {
     let res = this.state.agency.description ? this.state.agency.description : "";
@@ -281,7 +224,17 @@ class EditPosts extends Component {
     return (
       <>
         <TabPane tabId="1">
-
+          <Card>
+            <CardBody>
+              <div id="Addagency">
+                    <p><h3>{place.user_id}</h3></p>
+                    <p><i className="icon-map icons mt-4"/> {place.content}</p>
+                    <p><i className="icon-screen-desktop icons mt-4"/> {place.place_id}</p>
+                    <p><i className="icon-envelope icons mt-4"/> {place.place_id}</p>
+                    <p><i className="icon-location-pin icons  mt-4"/> {place.totalUpvotes}</p>
+              </div>
+            </CardBody>
+          </Card>
 
           <Card>
             <CardBody>
@@ -322,7 +275,7 @@ class EditPosts extends Component {
   }
 
   render() {
-    if (!this.state.isLoaded ) {
+    if (!(this.state.isLoaded && this.state.isCommentLoaded) ) {
       return <Spinner/>
     } else {
       return (
@@ -335,7 +288,7 @@ class EditPosts extends Component {
           <Row>
             <Col xs="12" md="12" className="mb-4">
               <TabContent activeTab={this.state.activeTab[0]}>
-                {this.tabPane(this.state.place, this.state.posts)}
+                {this.tabPane(this.state.post, this.state.comments)}
                 {this.state.alert}
                 {this.checkoutModal()}
               </TabContent>

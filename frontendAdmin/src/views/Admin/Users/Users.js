@@ -1,4 +1,4 @@
-import React,{Component} from 'react';
+import React, {Component} from 'react';
 import {
   Button, Card,
   CardBody,
@@ -13,7 +13,7 @@ import {
 import Spinner from "reactstrap/es/Spinner";
 import SweetAlert from 'react-bootstrap-sweetalert';
 import styles from "../../Config/styles";
-import { user, deleteUser} from "../Component/Request";
+import {user, deleteUser} from "../Component/Request";
 
 class Users extends Component {
 
@@ -47,17 +47,18 @@ class Users extends Component {
 
   deleteBrocker(id, index) {
     deleteUser(id).then((responseJson) => {
-      if (responseJson.data) {
+      if (responseJson) {
         const getAlert = () => (
           <SweetAlert
             success
             timeout={1500}
             onConfirm={() => {
               this.hideAlert();
-              this.state.data.splice(index, 1)
+              this.state.data.splice(index, 1);
+              this.setState({data:this.state.data});
             }}
           >
-            {responseJson.message}
+            {responseJson.status}
           </SweetAlert>
         );
         this.setState({
@@ -68,7 +69,7 @@ class Users extends Component {
           <SweetAlert
             onConfirm={() => this.hideAlert()}
           >
-            {responseJson.errors.message}
+            "エラー"
           </SweetAlert>
         );
         this.setState({
@@ -82,7 +83,9 @@ class Users extends Component {
   handleChange(event) {
     console.log(event.target.value);
     this.state.filterField[event.target.name] = event.target.value;
-    this.setState({filterField: this.state.filterField}, () => {console.log(this.state.filterField)});
+    this.setState({filterField: this.state.filterField}, () => {
+      console.log(this.state.filterField)
+    });
   }
 
   renderAlert(investorId, index) {
@@ -132,7 +135,10 @@ class Users extends Component {
         <td>{data.id}</td>
         <td>{data.username}</td>
         {/*<td>{data.given_name}</td>*/}
-        <td>{data.avatar_url ? <img src={data.avatar_url} alt=""/> : <img className="img-avatar" height={100} width={100} src="https://w7.pngwing.com/pngs/304/305/png-transparent-man-with-formal-suit-illustration-web-development-computer-icons-avatar-business-user-profile-child-face-web-design.png" alt=""/>}</td>
+        <td>{data.avatar_url ? <img src={data.avatar_url} alt=""/> :
+          <img className="img-avatar" height={100} width={100}
+               src="https://w7.pngwing.com/pngs/304/305/png-transparent-man-with-formal-suit-illustration-web-development-computer-icons-avatar-business-user-profile-child-face-web-design.png"
+               alt=""/>}</td>
         <td>{data.email}</td>
         {/*<td>{data.username}</td>*/}
         {/*<td>{data.address}</td>*/}
@@ -163,15 +169,15 @@ class Users extends Component {
                 <NavItem>
                   <NavLink>
                     <TabPane tabId="2">
-                      <Card  style={{display: "flex", justifyContent: "center"}}>
+                      <Card style={{display: "flex", justifyContent: "center"}}>
                         <CardBody>
                           <Table responsive>
                             <thead>
                             <tr>
                               <th style={styles.topVertical}>ID</th>
                               <th>名前<Input bsSize="sm" type="text" id="username" name="username"
-                                                         className="input-sm" placeholder="検索"
-                                                         onChange={(event) => this.handleChange(event)}/></th>
+                                           className="input-sm" placeholder="検索"
+                                           onChange={(event) => this.handleChange(event)}/></th>
                               {/*<th>Họ tên môi giới<Input bsSize="sm" type="text" id="input-small" name="input-small"*/}
                               {/*                          className="input-sm" placeholder="Tìm kiếm"/></th>*/}
                               <th style={styles.topVertical}>アバター</th>

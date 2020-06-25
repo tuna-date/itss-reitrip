@@ -1,21 +1,25 @@
 import React, {Component} from 'react';
 import SweetAlert from 'react-bootstrap-sweetalert';
+import ReactSummernote from 'react-summernote';
 import 'react-summernote/dist/react-summernote.css';
 import {
   Button, Card,
   CardBody,
   Col, Container,
-  Modal, ModalBody, ModalFooter, ModalHeader,
+  FormGroup,
+  Input, Label, Modal, ModalBody, ModalFooter, ModalHeader,
   Row,
   TabContent, Table,
   TabPane
 } from 'reactstrap';
 import $ from 'jquery';
 import Spinner from "reactstrap/es/Spinner";
+import assets from "../../Config/assets";
 import {
-  deletePost,
+  getUserData,
   listposts,
-  place
+  // company, listCities, listDistricts, listWards,
+  place, upload
 } from "../Component/Request";
 import styles from "../../Config/styles";
 
@@ -35,7 +39,6 @@ class EditPosts extends Component {
       agency: {
         alert: null,
       },
-      alert:null,
       filterField: {
         place_id:"",
         name: "",
@@ -54,66 +57,71 @@ class EditPosts extends Component {
     });
   }
 
+  // updateAgency() {
+  //   let requestData = JSON.stringify({company: this.state.agency});
+  //   updateCompany(this.state.agencyId, requestData).then(() => {
+  //     const getAlert = () => (
+  //       <SweetAlert
+  //         success
+  //         timeout={1500}
+  //         onConfirm={() => this.props.history.push('/admin/agencies')}
+  //       >
+  //         Bạn đã cập nhật thông tin công ty môi giới thành công !
+  //       </SweetAlert>
+  //     );
+  //     this.setState({
+  //       alert: getAlert()
+  //     });
+  //   })
+  //     .catch((err) => console.log(err))
+  // }
 
- async componentDidMount() {
+  async componentDidMount() {
     const [placeResp, postResp] = await Promise.all([place(this.state.agencyId),
       listposts(this.state.agencyId)
-        // .then(resp =>{resp.forEach(async (resp) => {await getUserData(resp.user_id).then(response => {resp.user = response});await place(resp.place_id).then(response => (resp.place = response))})})
+      // .then(resp =>{resp.forEach(async (resp) => {await getUserData(resp.user_id).then(response => {resp.user = response});await place(resp.place_id).then(response => (resp.place = response))})})
     ]);
     this.setState({place:placeResp,posts:postResp,isLoaded:true}, ()=>{console.log(placeResp, postResp)});
   }
 
-  renderAlert(id,index){
-    const getAlert = () => (
-      <SweetAlert
-        custom
-        showCancel
-        confirmBtnText="Xóa"
-        cancelBtnText="Hủy"
-        confirmBtnBsStyle="primary"
-        cancelBtnBsStyle="default"
-        title="Bạn chắc chắn muốn xóa?"
-        onConfirm={()=>this.deletePost(id,index)}
-        onCancel={() => this.hideAlert()}
-      >
-        Bạn không thể khôi phục được thông tin đã xóa!
-      </SweetAlert>
-
-    );
-    this.setState({
-      alert: getAlert()
-    });
+  triggerUploadImage() {
+    document.getElementById("avatar-path").click();
   }
 
-  deletePost(id, index) {
-    deletePost(this.state.agencyId, id).then((responseJson) => {
-      if(responseJson) {
-        const getAlert = () => (
-          <SweetAlert
-            success
-            timeout={1500}
-            onConfirm={() => {this.hideAlert();this.setState({posts:this.state.posts.splice(index,1)})}}
-          >
-            {responseJson.status}
-          </SweetAlert>
-        );
+  uploadImage() {
+    let preview = document.querySelector('#logo');
+    let file = document.querySelector('#avatar-path').files[0]; //sames as here
+    if (file.size < assets.maxSize) {
+      let formData = new FormData();
+      formData.append("file[new_image_path][]", file);
+      upload(formData).then((responseJson) => {
+        preview.src = responseJson.data.files[0].relativeUrl;
         this.setState({
-          alert: getAlert()
+          logo: responseJson.data.files[0].imageUrl,
+          agency: {
+            ...this.state.agency,
+            avatar_path: responseJson.data.files[0].relativeUrl
+          }
         });
-      }else{
-        const getAlert = () => (
-          <SweetAlert
-            onConfirm={() => this.hideAlert()}
-          >
-            "エラー"
-          </SweetAlert>
-        );
-        this.setState({
-          alert: getAlert()
-        });
-      }
-    })
-      .catch((err) => console.log(err))
+
+      }, function (error) {
+        console.log(error);
+      });
+    } else {
+      const getAlert = () => (
+        <SweetAlert
+          timeout={1500}
+          confirmBtnBsStyle="danger"
+          onConfirm={() => this.hideAlert()}
+        >
+          Kích thước ảnh quá lớn ! Dung lượng tối đa cho ảnh là 10MB.
+        </SweetAlert>
+      );
+
+      this.setState({
+        alert: getAlert()
+      });
+    }
   }
 
   hideAlert() {
@@ -123,6 +131,22 @@ class EditPosts extends Component {
     console.log('Hiding alert...');
   }
 
+  onChange(content) {
+    this.setState({
+      agency: {
+        ...this.state.agency,
+        description: content
+      }
+    });
+  }
+
+  onImageUpload = (fileList) => {
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      ReactSummernote.insertImage(reader.result);
+    };
+    reader.readAsDataURL(fileList[0]);
+  };
 
   toggleLarge() {
     this.setState({
@@ -131,12 +155,50 @@ class EditPosts extends Component {
   }
 
 
+
+  handleChangeData = (event) => {
+    let input = event.target;
+    this.setState({
+      agency:
+        {
+          ...this.state.agency,
+          [input.name]: input.value
+        }
+    });
+  };
+  handleChange(event) {
+    this.state.filterField[event.target.name] = event.target.value;
+    this.setState(({filterField: this.state.filterField}));
+  }
+
   isSuitableCompany(company) {
     let fields = this.state.filterField;
     return ((company.place_id && company.place_id.toLowerCase().indexOf(fields.place_id.toLowerCase())) !== -1) &&
       ((company.email && company.email.toLowerCase().indexOf(fields.email.toLowerCase())) !== -1) &&
       ((company.number_phone && company.number_phone.toLowerCase().indexOf(fields.number_phone.toLowerCase())) !== -1);
   }
+
+  handleInputDispatch = (event) => {
+    const target = event.target;
+    let name = target.name;
+    let value = null;
+
+    if (name.includes("[]")) {
+      value = [target.value];
+      name = name.replace('[]', '');
+    } else {
+      value = target.value;
+    }
+
+
+    this.setState({
+      agency: {
+        ...this.state.agency,
+        [name]: value
+      }
+    }, () => {
+    });
+  };
 
   renderCompanyRow() {
     console.log(this.state.posts);
@@ -153,7 +215,7 @@ class EditPosts extends Component {
         <td>{index + 1}</td>
         <td>{data.user_id}</td>
         <td>{data.place_id}</td>
-        <td>{(data.content.length > 100) ? (data.content.slice(0, 100) + "...") : data.content}</td>
+        <td>{data.content}</td>
         <td>{data.totalVotes}</td>
         <td>
           <Button onClick={() => this.props.history.push("/lists/" + data.id + "/place/" + data.place_id)} className="mr-1 btn-info">
