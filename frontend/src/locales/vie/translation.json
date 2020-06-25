@@ -42,5 +42,6 @@
   "created": "Đã tạo bài viết, đánh giá",
   "stars": "sao",
   "updateSuccess": "Thay Đổi THÀNH CÔNG",
-  "deleteSuccess": "THÀNH CÔNG"
+  "deleteSuccess": "THÀNH CÔNG",
+  "uploadImage": "Tải ảnh lên"
 }

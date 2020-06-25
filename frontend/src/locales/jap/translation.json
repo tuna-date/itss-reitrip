@@ -42,5 +42,6 @@
   "created": "ポスト作成, 評価",
   "stars": "スター",
   "updateSuccess": "編集されました",
-  "deleteSuccess": "成功した"
+  "deleteSuccess": "成功した",
+  "uploadImage": "画像アプロード"
 }

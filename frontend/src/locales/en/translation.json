@@ -42,5 +42,6 @@
   "created": "POST CREATED, RATED",
   "stars": "stars",
   "updateSuccess": "UPDATED SUCCESSFUL",
-  "deleteSuccess": "SUCCESSFUL"
+  "deleteSuccess": "SUCCESSFUL",
+  "uploadImage": "Upload Image"
 }

@@ -170,7 +170,7 @@ class Profile extends Component {
           showModal={showProfileModal}
           username={user && user.username}
           avatar_url={user && user.avatar_url}
-          handleSubmit={this.handleEditProfile}
+          handleSubmit={this.handleEditProfile.bind(this)}
         />
       </div>
     )
