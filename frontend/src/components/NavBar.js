@@ -109,10 +109,10 @@ class NavBar extends Component {
               {t("home")}
             </Link>
           </Menu.Item>
-          <Menu.Item className="navbar_max" onClick={this.handleShowModal.bind(this)}>
+          <Menu.Item className="navbar_max" onClick={this.handleShowModal.bind(this)} style={{minWidth: 150}}>
             {token ? <div className="ellipsis"><Tooltip title={t("register")}>{t("register")}</Tooltip></div> : ''}
           </Menu.Item>
-          <Menu.Item className="navbar_max" onClick={this.handleShowPostModal.bind(this)}>
+          <Menu.Item className="navbar_max" onClick={this.handleShowPostModal.bind(this)} style={{minWidth: 150}}>
             {token ? <div className="ellipsis"><Tooltip title={t("create")}>{t("create")}</Tooltip></div> : ''}
           </Menu.Item>
           <div className="item" style={{ marginLeft: 5 }}>
