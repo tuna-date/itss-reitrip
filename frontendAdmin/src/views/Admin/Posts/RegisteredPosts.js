@@ -8,10 +8,10 @@ import {
   Row,
   TabContent,
   Table,
-  TabPane, Spinner, Container, Input,InputGroup,InputGroupAddon,InputGroupText
+  TabPane, Spinner, Container, Input, InputGroup, InputGroupAddon, InputGroupText
 } from 'reactstrap';
 import styles from "../../Config/styles";
-import {getUserData, registeredPosts} from "../Component/Request";
+import {confirmPlace, deletePlace, getUserData, registeredPosts, rejectPlace} from "../Component/Request";
 
 
 class RegisteredPosts extends Component {
@@ -40,8 +40,12 @@ class RegisteredPosts extends Component {
 
   componentDidMount() {
     registeredPosts().then((responseJson) => {
-      responseJson.forEach(resp => {resp.user = getUserData(resp.user_id)});
-    this.setState({data: responseJson, isLoaded: true}, () => {console.log("kiem tra thong tin", responseJson)});
+      responseJson.forEach(resp => {
+        resp.user = getUserData(resp.user_id)
+      });
+      this.setState({data: responseJson, isLoaded: true}, () => {
+        console.log("kiem tra thong tin", responseJson)
+      });
     });
   }
 
@@ -52,7 +56,7 @@ class RegisteredPosts extends Component {
     console.log('Hiding alert...');
   }
 
-  renderAlert(id,index){
+  renderAlert(id, index) {
     const getAlert = () => (
       <SweetAlert
         custom
@@ -61,8 +65,8 @@ class RegisteredPosts extends Component {
         cancelBtnText="Hủy"
         confirmBtnBsStyle="primary"
         cancelBtnBsStyle="default"
-        title="Bạn chắc chắn muốn xóa?"
-        onConfirm={()=>this.deleteAdminBrocker(id,index)}
+        title="Bạn chắc chắn muốn xóa địa điểm này?"
+        onConfirm={() => this.denyPlace(id, index)}
         onCancel={() => this.hideAlert()}
       >
         Bạn không thể khôi phục được thông tin đã xóa!
@@ -73,6 +77,41 @@ class RegisteredPosts extends Component {
       alert: getAlert()
     });
   }
+
+  denyPlace(id, index) {
+    rejectPlace(id).then((responseJson) => {
+      if (responseJson) {
+        const getAlert = () => (
+          <SweetAlert
+            success
+            timeout={1500}
+            onConfirm={() => {
+              this.hideAlert();
+              this.state.data.splice(index, 1)
+            }}
+          >
+            Bạn đã từ chối bài đăng này
+          </SweetAlert>
+        );
+        this.setState({
+          alert: getAlert()
+        });
+      } else {
+        const getAlert = () => (
+          <SweetAlert
+            onConfirm={() => this.hideAlert()}
+          >
+            {responseJson.errors.message}
+          </SweetAlert>
+        );
+        this.setState({
+          alert: getAlert()
+        });
+      }
+    })
+      .catch((err) => console.log(err))
+  }
+
   toggle(tabPane, tab) {
     const newArray = this.state.activeTab.slice();
     newArray[tabPane] = tab;
@@ -100,6 +139,31 @@ class RegisteredPosts extends Component {
       ((company.number_phone && company.number_phone.toLowerCase().indexOf(fields.number_phone.toLowerCase())) !== -1);
   }
 
+  confirmCurrentPlace(id, index) {
+    confirmPlace(id).then(
+      (resp) => {
+        if (resp) {
+          const getAlert = () => (
+            <SweetAlert
+              success
+              timeout={1500}
+              onConfirm={() => {
+                this.hideAlert();
+                this.setState({data:this.state.data.splice(index, 1)})
+              }}
+            >
+              Bạn đã xác nhận cho bài đăng này!
+            </SweetAlert>
+          );
+          this.setState({
+            alert: getAlert()
+          });
+        }
+      }
+    )
+
+  }
+
   renderCompanyRow() {
     let filtering = (this.state.filterField.name || this.state.filterField.email || this.state.filterField.number_phone);
     let companies;
@@ -118,12 +182,12 @@ class RegisteredPosts extends Component {
         <td>{data.services}</td>
         <td>{data.state}</td>
         <td>
-          <Button onClick={() => this.togglePrimary(data.id)} className="mr-1 btn-info">
+          <Button onClick={() => {
+            this.props.history.push("/posts/edit/" + data.id);
+          }} className="mr-1 btn-info">
             <i className="fa fa-eye"/>
           </Button>
-          <Button className="mr-1 btn-primary" color="primary" onClick={() => {
-            this.props.history.push("/posts/edit/" + data.id);
-          }}>
+          <Button className="mr-1 btn-primary" color="primary" onClick={() => this.confirmCurrentPlace(data.id, index)}>
             <i className="cui-pencil icons font-lg "/>
           </Button>
           <Button className="mr-1 btn-danger" onClick={() => this.renderAlert(data.id, index)}>
@@ -150,15 +214,15 @@ class RegisteredPosts extends Component {
                            onChange={(event) => this.handleChange(event)}/>
                   </th>
                   <th style={styles.topVertical}>写真</th>
-                  <th>ロケーション
-                    <Input bsSize="sm" type="text" id="email" name="email"
-                           className="input-sm" placeholder="検索"
-                           onChange={(event) => this.handleChange(event)}/>
+                  <th style={styles.topVertical}>ロケーション
+                    {/*<Input bsSize="sm" type="text" id="email" name="email"*/}
+                    {/*       className="input-sm" placeholder="検索"*/}
+                    {/*       onChange={(event) => this.handleChange(event)}/>*/}
                   </th>
-                  <th>サービス
-                    <Input bsSize="sm" type="text" id="number_phone" name="number_phone"
-                           className="input-sm" placeholder="検索"
-                           onChange={(event) => this.handleChange(event)}/>
+                  <th style={styles.topVertical}>サービス
+                    {/*<Input bsSize="sm" type="text" id="number_phone" name="number_phone"*/}
+                    {/*       className="input-sm" placeholder="検索"*/}
+                    {/*       onChange={(event) => this.handleChange(event)}/>*/}
                   </th>
                   <th style={styles.topVertical}>状態</th>
                 </tr>
@@ -185,7 +249,7 @@ class RegisteredPosts extends Component {
       return (
         <Modal isOpen={this.state.showModal} toggle={() => this.togglePrimary()}
                className={'modal-lg ' + this.props.className}>
-          <ModalHeader toggle={() => this.togglePrimary(index)}　style={{textAlign:"center"}}>観光地の予報</ModalHeader>
+          <ModalHeader toggle={() => this.togglePrimary(index)} style={{textAlign: "center"}}>観光地の予報</ModalHeader>
           <ModalBody>
             <Container>
 
@@ -204,7 +268,7 @@ class RegisteredPosts extends Component {
               <hr/>
               <div>
                 <h4>デスクリプション</h4>
-                <div dangerouslySetInnerHTML={{ __html: res }} />
+                <div dangerouslySetInnerHTML={{__html: res}}/>
 
               </div>
             </Container>
@@ -225,16 +289,16 @@ class RegisteredPosts extends Component {
             <Col xs="12" md="6">
               <p className="font-weight-bold">新観光地の一覧</p>
             </Col>
-            <Col xs="12" md="6">
-              <InputGroup>
-                <Input type="email" id="input2-group1" name="input2-group1" placeholder=""/>
-                <InputGroupAddon addonType="append">
-                  <InputGroupText>
-                    <i className="fa fa-search"/>
-                  </InputGroupText>
-                </InputGroupAddon>
-              </InputGroup>
-            </Col>
+            {/*<Col xs="12" md="6">*/}
+            {/*  <InputGroup>*/}
+            {/*    <Input type="email" id="input2-group1" name="input2-group1" placeholder=""/>*/}
+            {/*    <InputGroupAddon addonType="append">*/}
+            {/*      <InputGroupText>*/}
+            {/*        <i className="fa fa-search"/>*/}
+            {/*      </InputGroupText>*/}
+            {/*    </InputGroupAddon>*/}
+            {/*  </InputGroup>*/}
+            {/*</Col>*/}
           </Row>
           <Row style={styles.lowMarginTop}>
             <Col xs="12" md="12" className="mb-4">

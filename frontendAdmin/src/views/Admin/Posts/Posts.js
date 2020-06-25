@@ -11,7 +11,7 @@ import {
   TabPane, Spinner, Container, Input,InputGroup,InputGroupAddon,InputGroupText
 } from 'reactstrap';
 import styles from "../../Config/styles";
-import {getUserData, posts} from "../Component/Request";
+import {deletePlace, getUserData, posts} from "../Component/Request";
 
 
 class Posts extends Component {
@@ -73,6 +73,40 @@ class Posts extends Component {
       alert: getAlert()
     });
   }
+
+  deleteAdminBrocker(id, index) {
+    deletePlace(id).then((responseJson) => {
+      if(responseJson) {
+        const getAlert = () => (
+          <SweetAlert
+            success
+            timeout={1500}
+            onConfirm={() => {this.hideAlert();this.state.data.splice(index,1);this.setState({data:this.state.data},() => {console.log(this.state.data)})}}
+          >
+            {responseJson.message}
+          </SweetAlert>
+        );
+        this.setState({
+          alert: getAlert()
+        });
+      }else{
+        const getAlert = () => (
+          <SweetAlert
+            onConfirm={() => this.hideAlert()}
+          >
+            {responseJson.errors.message}
+          </SweetAlert>
+        );
+        this.setState({
+          alert: getAlert()
+        });
+      }
+    })
+      .catch((err) => console.log(err))
+  }
+
+
+
   toggle(tabPane, tab) {
     const newArray = this.state.activeTab.slice();
     newArray[tabPane] = tab;
@@ -118,9 +152,9 @@ class Posts extends Component {
         <td>{data.services}</td>
         <td>{data.state}</td>
         <td>
-          <Button onClick={() => this.togglePrimary(data.id)} className="mr-1 btn-info">
-            <i className="fa fa-eye"/>
-          </Button>
+          {/*<Button onClick={() => this.togglePrimary(data.id)} className="mr-1 btn-info">*/}
+          {/*  <i className="fa fa-eye"/>*/}
+          {/*</Button>*/}
           <Button className="mr-1 btn-primary" color="primary" onClick={() => {
             this.props.history.push("/posts/edit/" + data.id);
           }}>
@@ -150,15 +184,15 @@ class Posts extends Component {
                            onChange={(event) => this.handleChange(event)}/>
                   </th>
                   <th style={styles.topVertical}>写真</th>
-                  <th>ロケーション
-                    <Input bsSize="sm" type="text" id="email" name="email"
-                           className="input-sm" placeholder="検索"
-                           onChange={(event) => this.handleChange(event)}/>
+                  <th style={styles.topVertical}>ロケーション
+                    {/*<Input bsSize="sm" type="text" id="email" name="email"*/}
+                    {/*       className="input-sm" placeholder="検索"*/}
+                    {/*       onChange={(event) => this.handleChange(event)}/>*/}
                   </th>
-                  <th>サービス
-                    <Input bsSize="sm" type="text" id="number_phone" name="number_phone"
-                           className="input-sm" placeholder="検索"
-                           onChange={(event) => this.handleChange(event)}/>
+                  <th style={styles.topVertical}>サービス
+                    {/*<Input bsSize="sm" type="text" id="number_phone" name="number_phone"*/}
+                    {/*       className="input-sm" placeholder="検索"*/}
+                    {/*       onChange={(event) => this.handleChange(event)}/>*/}
                   </th>
                   <th style={styles.topVertical}>状態</th>
                 </tr>
@@ -225,16 +259,16 @@ class Posts extends Component {
             <Col xs="12" md="6">
               <p className="font-weight-bold">新観光地の一覧</p>
             </Col>
-            <Col xs="12" md="6">
-              <InputGroup>
-                <Input type="email" id="input2-group1" name="input2-group1" placeholder=""/>
-                <InputGroupAddon addonType="append">
-                  <InputGroupText>
-                    <i className="fa fa-search"/>
-                  </InputGroupText>
-                </InputGroupAddon>
-              </InputGroup>
-            </Col>
+            {/*<Col xs="12" md="6">*/}
+            {/*  <InputGroup>*/}
+            {/*    <Input type="email" id="input2-group1" name="input2-group1" placeholder=""/>*/}
+            {/*    <InputGroupAddon addonType="append">*/}
+            {/*      <InputGroupText>*/}
+            {/*        <i className="fa fa-search"/>*/}
+            {/*      </InputGroupText>*/}
+            {/*    </InputGroupAddon>*/}
+            {/*  </InputGroup>*/}
+            {/*</Col>*/}
           </Row>
           <Row style={styles.lowMarginTop}>
             <Col xs="12" md="12" className="mb-4">

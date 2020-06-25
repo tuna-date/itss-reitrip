@@ -70,11 +70,6 @@ export const user = () => {
   return getData("/users")
 };
 
-//xóa người dùng
-export const deleteUser = (id) => {
-  return deleteData("/users/" + id)
-};
-
 //login tài khoản
 export const login = (formData) => {
   return postData('/admin/login', formData)
@@ -110,3 +105,38 @@ export const post = (placeId,id) => {
   return getData("/places/" + placeId + "/posts/" + id)
 }
 
+//lấy danh sách các comment trong một bài post
+export const comments = (placeId,id) => {
+  return getData("/places/" + placeId + "/posts/" + id + "/comments")
+}
+
+//xóa địa điểm
+export const deletePlace = (id) => {
+  return deleteData("/admin/places", JSON.stringify({"id":id}));
+}
+
+//xóa bình luận
+export const deleteComment = (placeId, postId, commentId) => {
+  return deleteData("/places/" + placeId + "/posts/" + postId + "/comments", JSON.stringify({"id": commentId}));
+}
+
+//xóa người dùng
+export const deleteUser = (id) => {
+  return deleteData("/admin/users", JSON.stringify({"user_id": id}));
+}
+
+//xóa bài đăng
+export const deletePost = (placeId, postId) => {
+  return deleteData("/places/" + placeId + "/posts", JSON.stringify({"id": postId}));
+}
+
+
+//xác thực địa điểm
+export const confirmPlace = (id) => {
+  return postData("/admin/places", JSON.stringify({"id":id, "state": "confirmed"}));
+}
+
+//hủy địa điểm
+export const rejectPlace = (id) => {
+  return postData("/admin/places", JSON.stringify({"id":id, "state": "rejected"}));
+}
